@@ -1,0 +1,214 @@
+#! /opt/homebrew/Cellar/icarus-verilog/13.0/bin/vvp
+:ivl_version "13.0 (stable)" "(v13_0)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 12;
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/system.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/vhdl_sys.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/vhdl_textio.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/v2005_math.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/va_math.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/v2009.vpi";
+S_0x13f7088f0 .scope package, "$unit" "$unit" 2 1;
+ .timescale 0 0;
+S_0x13f7156f0 .scope package, "cpu_pkg" "cpu_pkg" 3 13;
+ .timescale 0 0;
+P_0x13f715860 .param/l "OPCODE_BRANCH" 0 3 20, C4<1100011>;
+P_0x13f7158a0 .param/l "OPCODE_I_ALU" 0 3 17, C4<0010011>;
+P_0x13f7158e0 .param/l "OPCODE_JAL" 0 3 21, C4<1101111>;
+P_0x13f715920 .param/l "OPCODE_JALR" 0 3 22, C4<1100111>;
+P_0x13f715960 .param/l "OPCODE_LOAD" 0 3 18, C4<0000011>;
+P_0x13f7159a0 .param/l "OPCODE_LUI" 0 3 23, C4<0110111>;
+P_0x13f7159e0 .param/l "OPCODE_R" 0 3 16, C4<0110011>;
+P_0x13f715a20 .param/l "OPCODE_SW" 0 3 19, C4<0100011>;
+enum0x13f70eb40 .enum4 (3)
+   "ADD_SUB_FUNCT3" 3'b000,
+   "AND_FUNCT3" 3'b111,
+   "OR_FUNCT3" 3'b110,
+   "XOR_FUNCT3" 3'b100,
+   "SLT_FUNCT3" 3'b010
+ ;
+enum0x13f70f220 .enum4 (3)
+   "NEXTPC" 3'b000,
+   "ALU_PC_RESULT" 3'b001,
+   "OFFSET" 3'b010,
+   "ALU_PC_RESULT_JALR" 3'b011,
+   "NOP_PC" 3'b100
+ ;
+S_0x13f715a60 .scope module, "PC_Fetch_tb" "PC_Fetch_tb" 4 3;
+ .timescale -9 -12;
+v0x13f726360_0 .var "branch_dest_in", 31 0;
+v0x13f726410_0 .var "branch_predicted_in", 0 0;
+v0x13f7264a0_0 .var "current_pc_in", 31 0;
+v0x13f726550_0 .net "next_pc_addr_out", 31 0, v0x13f725fd0_0;  1 drivers
+v0x13f726600_0 .var "redirect_dest_in", 31 0;
+v0x13f7266d0_0 .var "redirect_valid_in", 0 0;
+v0x13f726780_0 .var "stall_in", 0 0;
+S_0x13f715bd0 .scope autotask, "check" "check" 4 33, 4 33 0, S_0x13f715a60;
+ .timescale -9 -12;
+v0x13f715d40_0 .var "expected", 31 0;
+TD_PC_Fetch_tb.check ;
+    %delay 1000, 0;
+    %load/vec4 v0x13f726550_0;
+    %load/vec4 v0x13f715d40_0;
+    %cmp/e;
+    %jmp/0xz  T_0.0, 4;
+    %vpi_call/w 4 36 "$display", "Passed" {0 0 0};
+    %jmp T_0.1;
+T_0.0 ;
+    %vpi_call/w 4 38 "$display", "Fail: expected: %h, got: %h", v0x13f715d40_0, v0x13f726550_0 {0 0 0};
+    %vpi_call/w 4 39 "$fatal" {0 0 0};
+T_0.1 ;
+    %end;
+S_0x13f725a50 .scope module, "dut" "PC_Fetch" 4 19, 5 3 0, S_0x13f715a60;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "stall_in";
+    .port_info 1 /INPUT 32 "current_pc_in";
+    .port_info 2 /INPUT 1 "redirect_valid_in";
+    .port_info 3 /INPUT 32 "redirect_dest_in";
+    .port_info 4 /INPUT 1 "branch_predicted_in";
+    .port_info 5 /INPUT 32 "branch_dest_in";
+    .port_info 6 /OUTPUT 32 "next_pc_addr_out";
+v0x13f725db0_0 .net "branch_dest_in", 31 0, v0x13f726360_0;  1 drivers
+v0x13f725e70_0 .net "branch_predicted_in", 0 0, v0x13f726410_0;  1 drivers
+v0x13f725f10_0 .net "current_pc_in", 31 0, v0x13f7264a0_0;  1 drivers
+v0x13f725fd0_0 .var "next_pc_addr_out", 31 0;
+v0x13f726080_0 .net "redirect_dest_in", 31 0, v0x13f726600_0;  1 drivers
+v0x13f726170_0 .net "redirect_valid_in", 0 0, v0x13f7266d0_0;  1 drivers
+v0x13f726210_0 .net "stall_in", 0 0, v0x13f726780_0;  1 drivers
+E_0x13f725d40/0 .event anyedge, v0x13f726210_0, v0x13f725f10_0, v0x13f726170_0, v0x13f726080_0;
+E_0x13f725d40/1 .event anyedge, v0x13f725e70_0, v0x13f725db0_0;
+E_0x13f725d40 .event/or E_0x13f725d40/0, E_0x13f725d40/1;
+    .scope S_0x13f725a50;
+T_1 ;
+Ewait_0 .event/or E_0x13f725d40, E_0x0;
+    %wait Ewait_0;
+    %load/vec4 v0x13f726210_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_1.0, 8;
+    %load/vec4 v0x13f725f10_0;
+    %store/vec4 v0x13f725fd0_0, 0, 32;
+    %jmp T_1.1;
+T_1.0 ;
+    %load/vec4 v0x13f726170_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_1.2, 8;
+    %load/vec4 v0x13f726080_0;
+    %store/vec4 v0x13f725fd0_0, 0, 32;
+    %jmp T_1.3;
+T_1.2 ;
+    %load/vec4 v0x13f725e70_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_1.4, 8;
+    %load/vec4 v0x13f725db0_0;
+    %store/vec4 v0x13f725fd0_0, 0, 32;
+    %jmp T_1.5;
+T_1.4 ;
+    %load/vec4 v0x13f725f10_0;
+    %addi 4, 0, 32;
+    %store/vec4 v0x13f725fd0_0, 0, 32;
+T_1.5 ;
+T_1.3 ;
+T_1.1 ;
+    %jmp T_1;
+    .thread T_1, $push;
+    .scope S_0x13f715a60;
+T_2 ;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0x13f726780_0, 0, 1;
+    %pushi/vec4 16, 0, 32;
+    %store/vec4 v0x13f7264a0_0, 0, 32;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0x13f7266d0_0, 0, 1;
+    %pushi/vec4 4096, 0, 32;
+    %store/vec4 v0x13f726600_0, 0, 32;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0x13f726410_0, 0, 1;
+    %pushi/vec4 65536, 0, 32;
+    %store/vec4 v0x13f726360_0, 0, 32;
+    %delay 1000, 0;
+    %alloc S_0x13f715bd0;
+    %pushi/vec4 20, 0, 32;
+    %store/vec4 v0x13f715d40_0, 0, 32;
+    %fork TD_PC_Fetch_tb.check, S_0x13f715bd0;
+    %join;
+    %free S_0x13f715bd0;
+    %delay 1000, 0;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v0x13f7266d0_0, 0, 1;
+    %delay 1000, 0;
+    %alloc S_0x13f715bd0;
+    %pushi/vec4 4096, 0, 32;
+    %store/vec4 v0x13f715d40_0, 0, 32;
+    %fork TD_PC_Fetch_tb.check, S_0x13f715bd0;
+    %join;
+    %free S_0x13f715bd0;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0x13f7266d0_0, 0, 1;
+    %delay 1000, 0;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v0x13f726410_0, 0, 1;
+    %delay 1000, 0;
+    %alloc S_0x13f715bd0;
+    %pushi/vec4 65536, 0, 32;
+    %store/vec4 v0x13f715d40_0, 0, 32;
+    %fork TD_PC_Fetch_tb.check, S_0x13f715bd0;
+    %join;
+    %free S_0x13f715bd0;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0x13f726410_0, 0, 1;
+    %delay 1000, 0;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v0x13f726780_0, 0, 1;
+    %delay 1000, 0;
+    %alloc S_0x13f715bd0;
+    %pushi/vec4 16, 0, 32;
+    %store/vec4 v0x13f715d40_0, 0, 32;
+    %fork TD_PC_Fetch_tb.check, S_0x13f715bd0;
+    %join;
+    %free S_0x13f715bd0;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0x13f726780_0, 0, 1;
+    %delay 1000, 0;
+    %alloc S_0x13f715bd0;
+    %pushi/vec4 20, 0, 32;
+    %store/vec4 v0x13f715d40_0, 0, 32;
+    %fork TD_PC_Fetch_tb.check, S_0x13f715bd0;
+    %join;
+    %free S_0x13f715bd0;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v0x13f726410_0, 0, 1;
+    %delay 1000, 0;
+    %alloc S_0x13f715bd0;
+    %pushi/vec4 65536, 0, 32;
+    %store/vec4 v0x13f715d40_0, 0, 32;
+    %fork TD_PC_Fetch_tb.check, S_0x13f715bd0;
+    %join;
+    %free S_0x13f715bd0;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v0x13f7266d0_0, 0, 1;
+    %delay 1000, 0;
+    %alloc S_0x13f715bd0;
+    %pushi/vec4 4096, 0, 32;
+    %store/vec4 v0x13f715d40_0, 0, 32;
+    %fork TD_PC_Fetch_tb.check, S_0x13f715bd0;
+    %join;
+    %free S_0x13f715bd0;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v0x13f726780_0, 0, 1;
+    %alloc S_0x13f715bd0;
+    %pushi/vec4 16, 0, 32;
+    %store/vec4 v0x13f715d40_0, 0, 32;
+    %fork TD_PC_Fetch_tb.check, S_0x13f715bd0;
+    %join;
+    %free S_0x13f715bd0;
+    %vpi_call/w 4 85 "$finish" {0 0 0};
+    %end;
+    .thread T_2;
+# The file index is used to find the file name in the following table.
+:file_names 6;
+    "N/A";
+    "<interactive>";
+    "-";
+    "include/cpu_pkg.sv";
+    "testbenches/PC_Fetch_tb.sv";
+    "PC_Fetch.sv";
