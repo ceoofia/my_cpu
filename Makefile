@@ -1,8 +1,8 @@
-TARGET  = PC_Fetch_tb
+TARGET  = Instr_Mem_tb
 OUT_DIR = output_dump
 
-RTL = PC_Fetch.sv
-TB  = testbenches/PC_Fetch_tb.sv
+RTL = Instr_Mem.sv
+TB  = testbenches/Instr_Mem_tb.sv
 PKG = include/cpu_pkg.sv
 
 all: run
