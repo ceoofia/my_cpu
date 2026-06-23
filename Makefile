@@ -1,8 +1,8 @@
-TARGET  = Instr_Mem_tb
+TARGET  = Branch_Predictor_tb
 OUT_DIR = output_dump
 
-RTL = Instr_Mem.sv
-TB  = testbenches/Instr_Mem_tb.sv
+RTL = Branch_Predictor.sv
+TB  = testbenches/Branch_Predictor_tb.sv
 PKG = include/cpu_pkg.sv
 
 all: run

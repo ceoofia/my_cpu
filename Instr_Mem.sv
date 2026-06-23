@@ -1,4 +1,5 @@
 //instruction memory for the processor, a 8x1024 MEM
+import cpu_pkg::*;
 
 module Instr_Mem #(
     parameter MEM_WIDTH = 1024
