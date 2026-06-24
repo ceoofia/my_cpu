@@ -37,13 +37,12 @@ module Branch_Predictor (
         end else if (update_en_in) begin
             if(branch_taken_in) begin
                 if(BHT[update_index] != 2'b11) BHT[update_index] <= BHT[update_index] + 1;
-            else begin
+            end else begin
                 if(BHT[update_index] != 2'b00) BHT[update_index] <= BHT[update_index] - 1;
             end
-            end
         end
-    end 
-
+    end
+    
     assign predicted_taken = BHT[pc_index] [1];
 
     
