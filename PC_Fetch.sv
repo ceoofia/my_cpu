@@ -14,8 +14,8 @@ module PC_Fetch (
     input logic branch_predicted_in, // 1 when predicted taken
     input logic [31:0] branch_dest_in,
 
-    output logic [31:0] current_pc_out,
-    output logic [31:0] next_pc_addr_out
+    output logic [31:0] current_pc_out
+    //output logic [31:0] next_pc_addr_out
 );
     logic [31:0] next_pc;
     logic [31:0] current_pc;
@@ -33,14 +33,14 @@ module PC_Fetch (
 
     always @(posedge clk) begin
         if(reset) begin
-            current_pc = 0;
+            current_pc <= 0;
         end else begin
             current_pc <= next_pc;
         end
     end
 
     assign current_pc_out = current_pc;
-    assign next_pc_addr_out = next_pc;
+    //assign next_pc_addr_out = next_pc;
 
     
     

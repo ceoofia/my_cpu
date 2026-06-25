@@ -1,9 +1,9 @@
-TARGET  = Branch_Predictor_tb
+TARGET  = PC_Fetch_tb
 OUT_DIR = output_dump
 
-RTL = Branch_Predictor.sv
-TB  = testbenches/Branch_Predictor_tb.sv
-PKG = include/cpu_pkg.sv
+RTL = PC_Fetch.sv
+TB  = testbenches/PC_Fetch_tb.sv
+PKG = cpu_pkg.sv
 
 all: run
 
