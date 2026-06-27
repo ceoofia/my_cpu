@@ -28,6 +28,16 @@ module IF_Stage #(
 );
     logic [31:0] if_int_current_pc_fetch;
     logic if_int_predicted_taken;
+    logic if_instr_req_valid;
+
+    assign if_curr_pc = if_int_current_pc_fetch;
+
+    always_comb begin 
+        if(reset == 1'b1 || if_stall_in == 1'b1) 
+            if_instr_req_valid = 1'b0;
+        else
+            if_instr_req_valid = 1'b1;
+    end
 
     PC_Fetch IF_PC_Fetch (
         .clk(clk),
@@ -59,8 +69,6 @@ module IF_Stage #(
         .instr_data_out(if_instr_data)
     );
 
-    logic if_instr_req_valid;
-
     Branch_Predictor IF_Branch_predictor(
         .clk(clk),
         .reset(reset),
@@ -75,13 +83,5 @@ module IF_Stage #(
         .predicted_taken(if_int_predicted_taken)
     );
 
-    assign if_curr_pc = if_int_current_pc_fetch;
-
-    always_comb begin 
-        if(reset == 1'b1 || if_stall_in == 1'b1) 
-            if_instr_req_valid = 1'b1;
-        else
-            if_instr_req_valid = 1'b1;
-    end
 
 endmodule
