@@ -62,15 +62,11 @@ module IF_Stage_tb;
         input logic [31:0] instr_data_tb
     );
         #1;
-        assert(if_instr_data === instr_data_tb)
+        assert(if_instr_data === instr_data_tb && if_instr_valid == instr_valid_tb)
+            $display("Test %0d passed", testnum);
         else
-            $fatal(1, "Test %0d Failed, Expected: %0h, DUT: %0h", testnum, instr_data_tb, if_instr_data);
-        
-        assert(if_instr_valid == instr_valid_tb)
-        else    
-            $fatal(1, "Test %0d Failed, Expected: %0h, DUT: %0h", testnum, instr_valid_tb, if_instr_valid);
-
-        $display("Test %0d passed.", testnum);
+            $fatal(1, "Test %0d Failed, Expected Valid: %0b, DUT Valid: %0b, Expected Instr Data: %0h. DUT Instr Data: %0h",
+                testnum, instr_valid_tb, if_instr_valid, instr_data_tb, if_instr_data);
         /*
             TODO: Finish this task. also check instr_valid
         */
@@ -159,11 +155,16 @@ module IF_Stage_tb;
         check_curr_pc(5, 32'h8);
         check_instr(6, 1'b0, 32'hx);
         if_stall_in = 1'b0;
-        
 
+        @(posedge clk)
+        check_curr_pc(7, 32'd12);
+        check_instr(8, 1'b1, 32'h33333333);
+        if_redirect_valid = 1'b1;
+        if_redirect_dest = 32'd100;
 
-
-
+        @(posedge clk)
+        check_curr_pc(9, 32'd100);
+        check_instr(10, 1'b1, 32'h55555555);
 
         
         $finish;

@@ -42,6 +42,4 @@ module PC_Fetch (
     assign current_pc_out = current_pc;
     //assign next_pc_addr_out = next_pc;
 
-    
-    
 endmodule

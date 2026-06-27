@@ -1,0 +1,2 @@
+CPU stages:
+IF -> IF2 -> Decode -> Execute -> Memory -> WB
