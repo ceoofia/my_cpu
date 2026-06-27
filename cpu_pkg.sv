@@ -38,6 +38,14 @@ package cpu_pkg;
         NOP_PC
     } pc_mux_sel;
 
+    typedef enum logic [2:0] {
+        IMM_S_TYPE,
+        IMM_I_TYPE,
+        IMM_B_TYPE,
+        IMM_U_TYPE,
+        IMM_J_TYPE
+    } imm_sel;
+
 
 
 endpackage

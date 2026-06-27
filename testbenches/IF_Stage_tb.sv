@@ -67,9 +67,6 @@ module IF_Stage_tb;
         else
             $fatal(1, "Test %0d Failed, Expected Valid: %0b, DUT Valid: %0b, Expected Instr Data: %0h. DUT Instr Data: %0h",
                 testnum, instr_valid_tb, if_instr_valid, instr_data_tb, if_instr_data);
-        /*
-            TODO: Finish this task. also check instr_valid
-        */
     endtask
 
     task automatic reset_signals();
@@ -164,7 +161,9 @@ module IF_Stage_tb;
 
         @(posedge clk)
         check_curr_pc(9, 32'd100);
-        check_instr(10, 1'b1, 32'h55555555);
+        check_instr(10, 1'b1, 32'h44444444);
+        if_redirect_valid = 1'b0;
+
 
         
         $finish;
