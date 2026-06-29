@@ -1,7 +1,7 @@
 module Imm_Parser_tb;
 
     logic [31:0] instr_data_in;
-    imm_sel imm_type_in;
+    cpu_pkg::imm_sel imm_type_in;
     logic [31:0] Imm_out;
 
     Imm_Parser dut (
@@ -13,7 +13,7 @@ module Imm_Parser_tb;
     task automatic check (
         input int testnum,
         input logic [31:0] test_instr, 
-        input imm_sel imm_type_in_tb,
+        input cpu_pkg::imm_sel imm_type_in_tb,
         input logic [31:0] expected_tb
     );
         instr_data_in = test_instr;

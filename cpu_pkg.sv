@@ -31,6 +31,11 @@ package cpu_pkg;
     } R_funct3;
 
     typedef enum logic [2:0] {
+        BEQ_FUNCT3 = 3'b000,
+        BNE_FUNCT3 = 3'b001
+    } BR_funct3;
+
+    typedef enum logic [2:0] {
         NEXTPC,
         ALU_PC_RESULT,
         OFFSET,
@@ -43,8 +48,43 @@ package cpu_pkg;
         IMM_I_TYPE,
         IMM_B_TYPE,
         IMM_U_TYPE,
-        IMM_J_TYPE
+        IMM_J_TYPE,
+        NO_IMM,
+        NULL_IMM
     } imm_sel;
+
+    typedef enum logic [2:0] {
+        ALU_ADD,
+        ALU_SUB,
+        ALU_AND,
+        ALU_OR,
+        ALU_XOR,
+        ALU_SLT
+    } alu_op;
+
+    typedef enum logic [1:0] {
+        ALU_A_RS1,
+        ALU_A_PC,
+        ALU_A_NOP
+    } alu_a_src;
+
+    typedef enum logic [1:0] {
+        ALU_B_RS2,
+        ALU_B_IMM,
+        ALU_B_NOP
+    } alu_b_src;
+
+    typedef enum logic [2:0] {
+        NO_BRANCH,
+        BRANCH_BEQ,
+        BRANCH_BNE
+    } branch_op;
+
+    typedef enum logic [2:0] {
+        NO_JUMP,
+        JUMP_JAL,
+        JUMP_JALR
+    } jump_op;
 
 
 

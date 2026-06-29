@@ -1,5 +1,0 @@
-CPU stages:
-IF1 -> IF2 -> Decode -> Execute -> Memory -> WriteBack
-
-IF1: Request pc <- current pc
-IF2: Returns pc 
