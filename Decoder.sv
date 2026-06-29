@@ -31,7 +31,6 @@ module Decoder(
     output logic [4:0] rd_addr_out,
     output logic use_rd_out,
 
-
     output logic [6:0] opcode_out,
 
     //For Immediate Parser
@@ -81,6 +80,7 @@ module Decoder(
 
                     alu_en_out = 1'b1;
                     comp_en_out = 1'b0;
+                    comp_op_out = NO_COMP;
                     alu_a_src_out = ALU_A_RS1;
                     alu_b_src_out = ALU_B_RS2;
 
@@ -100,9 +100,10 @@ module Decoder(
                         3'b110: alu_op_out = ALU_OR;    //ori
                         default: alu_op_out = ALU_NULL;
                     endcase
-                    
+
                     alu_en_out = 1'b1;
                     comp_en_out = 1'b0;
+                    comp_op_out = NO_COMP;
                     alu_a_src_out = ALU_A_RS1;
                     alu_b_src_out = ALU_B_IMM;
 
@@ -122,6 +123,7 @@ module Decoder(
 
                     alu_en_out = 1'b1;
                     comp_en_out = 1'b0;
+                    comp_op_out = NO_COMP;
                     alu_a_src_out = ALU_A_RS1;
                     alu_b_src_out = ALU_B_IMM;
 
@@ -135,6 +137,9 @@ module Decoder(
                     branch_op_out = NO_BRANCH;
                     jump_op_out = NO_JUMP;
 
+                    alu_en_out = 1'b1;
+                    comp_en_out = 1'b0;
+                    comp_op_out = NO_COMP;
                     alu_a_src_out = ALU_A_RS1;
                     alu_b_src_out = ALU_B_RS2;
 
@@ -150,7 +155,14 @@ module Decoder(
                         BNE_FUNCT3: branch_op_out = BRANCH_BNE;
                         default: branch_op_out = NO_BRANCH;
                     endcase
+
+                    alu_en_out = 1'b0;
+                    comp_en_out = 1'b1;
+                    comp_op_out = 
                     jump_op_out = NO_JUMP;
+                    alu_a_src_out = ALU_A_NOP;
+                    alu_b_src_out = ALU_B_NOP;
+
 
 
                 end
