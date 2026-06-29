@@ -22,13 +22,16 @@ package cpu_pkg;
     parameter OPCODE_JALR   = 7'b1100111; //JALR
     parameter OPCODE_LUI    = 7'b0110111; //LUI
     
-    typedef enum logic [2:0] {
+    /*
+        typedef enum logic [2:0] {
         ADD_SUB_FUNCT3 = 3'h0,
         AND_FUNCT3  = 3'h7,
         OR_FUNCT3   = 3'h6,
         XOR_FUNCT3  = 3'h4,
         SLT_FUNCT3  = 3'h2
-    } R_funct3;
+        }  R_funct3;
+    */
+    
 
     typedef enum logic [2:0] {
         BEQ_FUNCT3 = 3'b000,
@@ -59,7 +62,9 @@ package cpu_pkg;
         ALU_AND,
         ALU_OR,
         ALU_XOR,
-        ALU_SLT
+        ALU_SLT,
+        ALU_NULL,
+        NO_ALU
     } alu_op;
 
     typedef enum logic [1:0] {
@@ -86,6 +91,12 @@ package cpu_pkg;
         JUMP_JALR
     } jump_op;
 
+    typedef enum logic [2:0] {
+        COMP_BEQ,
+        COMP_BNE,
+        COMP_SLT,
+        NO_COMP
+    } comp_op;
 
 
 endpackage
