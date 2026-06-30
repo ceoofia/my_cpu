@@ -141,11 +141,11 @@ module IF_Stage_tb;
 
         @(posedge clk) 
         check_curr_pc(1, 32'h4);
-        check_instr(2, 1'b1, 32'h11111111);
+        check_instr(2, 1'b1, 32'h22222222);
 
         @(posedge clk)
         check_curr_pc(3, 32'h8);
-        check_instr(4, 1'b1, 32'h22222222);
+        check_instr(4, 1'b1, 32'h33333333);
         if_stall_in = 1'b1;
 
         @(posedge clk)
@@ -155,17 +155,15 @@ module IF_Stage_tb;
 
         @(posedge clk)
         check_curr_pc(7, 32'd12);
-        check_instr(8, 1'b1, 32'h33333333);
+        check_instr(8, 1'b1, 32'h44444444);
         if_redirect_valid = 1'b1;
         if_redirect_dest = 32'd100;
 
         @(posedge clk)
         check_curr_pc(9, 32'd100);
-        check_instr(10, 1'b1, 32'h44444444);
+        check_instr(10, 1'b1, 32'h55555555);
         if_redirect_valid = 1'b0;
 
-
-        
         $finish;
     end
 

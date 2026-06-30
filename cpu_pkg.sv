@@ -70,6 +70,7 @@ package cpu_pkg;
     typedef enum logic [1:0] {
         ALU_A_RS1,
         ALU_A_PC,
+        ALU_A_ZERO,
         ALU_A_NOP
     } alu_a_src;
 

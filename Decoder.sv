@@ -4,7 +4,7 @@ module Decoder(
     input logic [31:0] instr_data_in,
     input logic instr_valid_in,
     input logic [31:0] instr_pc_in,
-    input logic insert_NOP_bubble_in, // pulls high when
+    input logic insert_NOP_bubble_in, // pulls high when we want to stall
     
     //ALU related
     output logic alu_en_out,
@@ -12,9 +12,6 @@ module Decoder(
     output cpu_pkg::alu_a_src alu_a_src_out,
     output cpu_pkg::alu_b_src alu_b_src_out,
 
-    /*
-        TODO: Review
-    */
     //Comparator related
     output logic comp_en_out,
     output cpu_pkg::comp_op comp_op_out,
@@ -30,14 +27,17 @@ module Decoder(
     output logic use_rs2_out,
     output logic [4:0] rd_addr_out,
     output logic use_rd_out,
+    output logic reg_write_out,
 
+    //memory
+    output logic lsu_en_out,
     output logic [6:0] opcode_out,
+
+    //misc
+    output logic [31:0] instr_pc_out,
 
     //For Immediate Parser
     output cpu_pkg::imm_sel imm_type_out
-    /*
-        TODO: Add relevant outputs
-    */
 );  
     logic [6:0] funct7;
     logic [2:0] funct3;
@@ -57,132 +57,203 @@ module Decoder(
     assign rs2_addr_out = rs2;
     assign rd_addr_out = rd;
 
+    logic reg_write;
+
+    assign reg_write_out = reg_write;
+    assign use_rd_out = reg_write && rd != 5'd0;
+
+    assign instr_pc_out = instr_pc_in;
+    assign opcode_out = instr_data_in[6:0];
+
     always @(*) begin
+        //first initialize the signals
+        comp_en_out = 1'b0;
+        alu_en_out = 1'b0;
+        comp_op_out = NO_COMP;
+        imm_type_out = NO_IMM;
+        branch_op_out = NO_BRANCH;
+        jump_op_out = NO_JUMP;
+        alu_a_src_out = ALU_A_NOP;
+        alu_b_src_out = ALU_B_NOP;
+        reg_write = 1'b0;
+        lsu_en_out = 1'b0;
         if(!instr_valid_in || insert_NOP_bubble_in) begin
+            comp_en_out = 1'b0;
+            alu_en_out = 1'b0;
+            comp_op_out = NO_COMP;
             imm_type_out = NO_IMM;
             branch_op_out = NO_BRANCH;
             jump_op_out = NO_JUMP;
+            alu_a_src_out = ALU_A_NOP;
+            alu_b_src_out = ALU_B_NOP;
+            reg_write = 1'b0;
+            lsu_en_out = 1'b0;
         end else begin
             case(instr_data_in[6:0])
                 OPCODE_R: begin
-                    imm_type_out = NO_IMM;
-                    branch_op_out = NO_BRANCH;
-                    jump_op_out = NO_JUMP;
                     case({funct7,funct3})
-                        10'b0000000_000: alu_op_out = ALU_ADD;  //ADD
-                        10'b0100000_000: alu_op_out = ALU_SUB;  //SUB
-                        10'b0000000_111: alu_op_out = ALU_AND;  //AND
-                        10'b0000000_110: alu_op_out = ALU_OR;   //OR
-                        10'b0000000_100: alu_op_out = ALU_XOR;  //XOR
-                        10'b0000000_010: alu_op_out = ALU_SLT;  //SLT
+                        10'b0000000_000: begin //ADD
+                            alu_op_out = ALU_ADD;  
+                            alu_en_out = 1'b1;
+                        end 
+                        10'b0100000_000: begin //SUB
+                            alu_op_out = ALU_SUB;
+                            alu_en_out = 1'b1;
+                        end  
+
+                        10'b0000000_111: begin //AND
+                            alu_op_out = ALU_AND; 
+                            alu_en_out = 1'b1;
+                        end
+
+                        10'b0000000_110: begin //OR
+                            alu_op_out = ALU_OR;
+                            alu_en_out = 1'b1;
+                        end   
+
+                        10'b0000000_100: begin //XOR
+                            alu_op_out = ALU_XOR;
+                            alu_en_out = 1'b1;
+                        end
+                        
+                        10'b0000000_010: begin //SLT
+                            comp_op_out = COMP_SLT;
+                            comp_en_out = 1'b1;
+                        end
                         default: alu_op_out = ALU_NULL;
                     endcase
 
-                    alu_en_out = 1'b1;
-                    comp_en_out = 1'b0;
-                    comp_op_out = NO_COMP;
                     alu_a_src_out = ALU_A_RS1;
                     alu_b_src_out = ALU_B_RS2;
 
                     use_rs1_out = 1'b1;
                     use_rs2_out = 1'b1;
-                    use_rd_out = 1'b1;
+                    reg_write = 1'b1;
                 end
 
                 OPCODE_I_ALU: begin
                     imm_type_out = IMM_I_TYPE;
-                    branch_op_out = NO_BRANCH;
-                    jump_op_out = NO_JUMP;
                     case(funct3)
-                        3'b000: alu_op_out = ALU_ADD;   //addi
-                        3'b010: alu_op_out = ALU_SLT;   //slti
-                        3'b111: alu_op_out = ALU_AND;   //andi
-                        3'b110: alu_op_out = ALU_OR;    //ori
+                        3'b000: begin //addi
+                            alu_op_out = ALU_ADD;
+                            alu_en_out = 1'b1;
+                        end
+
+                        3'b010: begin //slti
+                            comp_op_out = COMP_SLT; 
+                            comp_en_out = 1'b1;
+                        end
+                        
+                        3'b111: begin //andi
+                            alu_op_out = ALU_AND;
+                            alu_en_out = 1'b1;
+                        end
+
+                        3'b110: begin //OR
+                            alu_op_out = ALU_OR;  
+                            alu_en_out = 1'b1;
+                        end
+                              
                         default: alu_op_out = ALU_NULL;
                     endcase
 
-                    alu_en_out = 1'b1;
-                    comp_en_out = 1'b0;
-                    comp_op_out = NO_COMP;
                     alu_a_src_out = ALU_A_RS1;
                     alu_b_src_out = ALU_B_IMM;
 
                     use_rs1_out = 1'b1;
                     use_rs2_out = 1'b0;
-                    use_rd_out = 1'b1;
+                    reg_write = 1'b1;
                 end
 
                 OPCODE_LOAD: begin
                     imm_type_out = IMM_I_TYPE;
-                    branch_op_out = NO_BRANCH;
-                    jump_op_out = NO_JUMP;
                     case(funct3)
                         3'b010: alu_op_out = ALU_ADD; //LW
                         default: alu_op_out = ALU_NULL;
                     endcase
 
                     alu_en_out = 1'b1;
-                    comp_en_out = 1'b0;
-                    comp_op_out = NO_COMP;
                     alu_a_src_out = ALU_A_RS1;
                     alu_b_src_out = ALU_B_IMM;
 
                     use_rs1_out = 1'b1;
                     use_rs2_out = 1'b0;
-                    use_rd_out = 1'b1;
+                    reg_write = 1'b1;
                 end
 
                 OPCODE_SW: begin
                     imm_type_out = IMM_S_TYPE;
-                    branch_op_out = NO_BRANCH;
-                    jump_op_out = NO_JUMP;
 
                     alu_en_out = 1'b1;
-                    comp_en_out = 1'b0;
-                    comp_op_out = NO_COMP;
                     alu_a_src_out = ALU_A_RS1;
-                    alu_b_src_out = ALU_B_RS2;
+                    alu_b_src_out = ALU_B_IMM;
 
                     use_rs1_out = 1'b1;
                     use_rs2_out = 1'b1;
-                    use_rd_out = 1'b0;
+                    lsu_en_out = 1'b1;
                 end
 
                 OPCODE_BRANCH: begin
                     imm_type_out = IMM_B_TYPE;
                     case(funct3)
-                        BEQ_FUNCT3: branch_op_out = BRANCH_BEQ;
-                        BNE_FUNCT3: branch_op_out = BRANCH_BNE;
+                        BEQ_FUNCT3: begin
+                            branch_op_out = BRANCH_BEQ;
+                            comp_op_out = COMP_BEQ;
+                        end
+
+                        BNE_FUNCT3: begin
+                            branch_op_out = BRANCH_BNE;
+                            comp_op_out = COMP_BNE;
+                        end 
                         default: branch_op_out = NO_BRANCH;
                     endcase
-
-                    alu_en_out = 1'b0;
+                    alu_en_out = 1'b1;
+                    alu_a_src_out = ALU_A_PC;
+                    alu_b_src_out = ALU_B_IMM;
+                    alu_op_out = ALU_ADD;
                     comp_en_out = 1'b1;
-                    comp_op_out = 
-                    jump_op_out = NO_JUMP;
-                    alu_a_src_out = ALU_A_NOP;
-                    alu_b_src_out = ALU_B_NOP;
 
-
-
+                    use_rs1_out = 1'b1;
+                    use_rs2_out = 1'b1;
+                    reg_write = 1'b0;
                 end
 
                 OPCODE_JAL: begin
                     imm_type_out = IMM_J_TYPE;
-                    branch_op_out = NO_BRANCH;
                     jump_op_out = JUMP_JAL;
+                    alu_a_src_out = ALU_A_PC;
+                    alu_b_src_out = ALU_B_IMM;
+                    alu_op_out = ALU_ADD;
+                    alu_en_out = 1'b1;
+                    
+                    use_rs1_out = 1'b0;
+                    use_rs2_out = 1'b0;
+                    reg_write = 1'b1;
                 end
 
                 OPCODE_JALR: begin
                     imm_type_out = IMM_I_TYPE;
-                    branch_op_out = NO_BRANCH;
                     jump_op_out = JUMP_JALR;
+                    
+                    alu_en_out = 1'b1;
+                    alu_a_src_out = ALU_A_RS1;
+                    alu_b_src_out = ALU_B_IMM;
+                    alu_op_out = ALU_ADD;
+                    
+                    use_rs1_out = 1'b1;
+                    use_rs2_out = 1'b0;
+                    reg_write = 1'b1;
                 end
 
                 OPCODE_LUI: begin
                     imm_type_out = IMM_U_TYPE;
-                    branch_op_out = NO_BRANCH;
-                    jump_op_out = NO_JUMP;
+                    
+                    alu_a_src_out = ALU_A_ZERO;
+                    alu_b_src_out = ALU_B_IMM;
+                    alu_op_out = ALU_ADD;
+                    alu_en_out = 1'b1;
+
+                    reg_write = 1'b1;
                 end
 
                 default: begin
@@ -193,9 +264,5 @@ module Decoder(
             endcase
         end
     end
-
-    assign opcode_out = instr_data_in[6:0];
-
-
-
+    
 endmodule

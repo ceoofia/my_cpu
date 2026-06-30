@@ -8,7 +8,9 @@ RTL = \
 	Instr_Mem.sv \
 	Branch_Predictor.sv \
 	IF_Stage.sv \
-	Imm_Parser.sv
+	Imm_Parser.sv \
+	IF_ID_Reg.sv \
+	Decoder.sv
 
 TB = testbenches/$(TARGET).sv
 

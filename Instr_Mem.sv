@@ -4,7 +4,6 @@ import cpu_pkg::*;
 module Instr_Mem #(
     parameter MEM_WIDTH = 1024
     )(
-    input logic clk,
     input logic mem_en, //enables memory
 
     input logic instr_req_valid,
@@ -21,11 +20,11 @@ module Instr_Mem #(
         end
     end
 
-    always_ff @(posedge clk) begin 
+    always @(*) begin 
         if (mem_en == 1'b1 && instr_req_valid == 1'b1) begin
             if(instr_req_addr_in + 3 < MEM_WIDTH) begin // guard against out of bound reading
-                instr_valid_out <= 1'b1;
-                instr_data_out <= {
+                instr_valid_out = 1'b1;
+                instr_data_out = {
                     instr_memory [instr_req_addr_in],
                     instr_memory [instr_req_addr_in + 1],
                     instr_memory [instr_req_addr_in + 2],

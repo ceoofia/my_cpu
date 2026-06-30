@@ -58,7 +58,6 @@ module IF_Stage #(
     Instr_Mem #(
         .MEM_WIDTH(MEM_WIDTH)
     ) IF_Instr_Mem (
-        .clk(clk),
         .mem_en(mem_en),
 
         .instr_req_valid(if_instr_req_valid),
