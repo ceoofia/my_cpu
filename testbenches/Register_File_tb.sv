@@ -91,11 +91,11 @@ module Register_File_tb;
 
         #1;
         for(i = 0; i < 32; i = i + 1) begin
-            check_element_direct(0, i, 32'h0);
+            check_element_direct(0, i, 32'h0); //check reset behavior
         end
 
         drive_reg(5'h0, 32'h12345);
-        check_element_1(1, 5'h0, 32'h0);
+        check_element_1(1, 5'h0, 32'h0); 
 
         drive_reg(5'h3, 32'h33);
         drive_reg(5'h4, 32'h44);
@@ -107,7 +107,7 @@ module Register_File_tb;
         drive_reg(5'h5, 32'h55);
 
         check_element_1(4, 5'h5, 32'h55);
-        check_element_2(5, 5'h5, 32'h55);
+        check_element_2(5, 5'h5, 32'h55); //simultaneous reads
         
         $finish;    
     end

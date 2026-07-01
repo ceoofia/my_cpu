@@ -44,6 +44,5 @@ module Branch_Predictor (
     end
     
     assign predicted_taken = BHT[pc_index] [1];
-
     
 endmodule
