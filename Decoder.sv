@@ -37,7 +37,8 @@ module Decoder(
     output logic [31:0] instr_pc_out,
 
     //For Immediate Parser
-    output cpu_pkg::imm_sel imm_type_out
+    output cpu_pkg::imm_sel imm_type_out,
+    output cpu_pkg::lsu_op  lsu_op_out
 );  
     logic [6:0] funct7;
     logic [2:0] funct3;
@@ -77,6 +78,9 @@ module Decoder(
         alu_b_src_out = ALU_B_NOP;
         reg_write = 1'b0;
         lsu_en_out = 1'b0;
+        alu_op_out = NO_ALU;
+        lsu_op_out = NO_LSU;
+
         if(!instr_valid_in || insert_NOP_bubble_in) begin
             comp_en_out = 1'b0;
             alu_en_out = 1'b0;
@@ -88,6 +92,8 @@ module Decoder(
             alu_b_src_out = ALU_B_NOP;
             reg_write = 1'b0;
             lsu_en_out = 1'b0;
+            alu_op_out = NO_ALU;
+
         end else begin
             case(instr_data_in[6:0])
                 OPCODE_R: begin
@@ -168,7 +174,10 @@ module Decoder(
                 OPCODE_LOAD: begin
                     imm_type_out = IMM_I_TYPE;
                     case(funct3)
-                        3'b010: alu_op_out = ALU_ADD; //LW
+                        3'b010: begin
+                            alu_op_out = ALU_ADD; //LW
+                            lsu_op_out = LW;
+                        end
                         default: alu_op_out = ALU_NULL;
                     endcase
 
@@ -179,6 +188,7 @@ module Decoder(
                     use_rs1_out = 1'b1;
                     use_rs2_out = 1'b0;
                     reg_write = 1'b1;
+                    lsu_en_out = 1'b1;
                 end
 
                 OPCODE_SW: begin
@@ -187,10 +197,12 @@ module Decoder(
                     alu_en_out = 1'b1;
                     alu_a_src_out = ALU_A_RS1;
                     alu_b_src_out = ALU_B_IMM;
+                    alu_op_out = ALU_ADD; //SW
 
                     use_rs1_out = 1'b1;
                     use_rs2_out = 1'b1;
                     lsu_en_out = 1'b1;
+                    lsu_op_out = SW;
                 end
 
                 OPCODE_BRANCH: begin

@@ -32,12 +32,12 @@ module Instr_Mem #(
                 };
             end 
             else begin
-                instr_valid_out <= 1'b0;
-                instr_data_out <= 32'hx;
+                instr_valid_out = 1'b0;
+                instr_data_out = 32'hx;
             end 
         end else begin
-            instr_valid_out <= 1'b0;
-            instr_data_out <= 'x;
+            instr_valid_out = 1'b0;
+            instr_data_out = 'x;
         end
     end
 endmodule

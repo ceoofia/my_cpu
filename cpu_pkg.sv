@@ -62,8 +62,8 @@ package cpu_pkg;
         ALU_AND,
         ALU_OR,
         ALU_XOR,
-        ALU_SLT,
-        ALU_NULL,
+        ALU_SLT, //?
+        ALU_NULL, //operation
         NO_ALU
     } alu_op;
 
@@ -98,6 +98,12 @@ package cpu_pkg;
         COMP_SLT,
         NO_COMP
     } comp_op;
+
+    typedef enum logic [1:0] {
+        LW,
+        SW,
+        NO_LSU
+    } lsu_op;
 
 
 endpackage
