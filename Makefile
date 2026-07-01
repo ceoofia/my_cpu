@@ -10,7 +10,8 @@ RTL = \
 	IF_Stage.sv \
 	Imm_Parser.sv \
 	IF_ID_Reg.sv \
-	Decoder.sv
+	Decoder.sv \
+	Register_File.sv
 
 TB = testbenches/$(TARGET).sv
 
