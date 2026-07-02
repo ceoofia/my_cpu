@@ -64,7 +64,7 @@ package cpu_pkg;
         ALU_XOR,
         ALU_SLT, //?
         ALU_NULL, //operation
-        NO_ALU
+        ALU_NOP //used for NOP, writes back to x0 with 0
     } alu_op;
 
     typedef enum logic [1:0] {
@@ -104,6 +104,44 @@ package cpu_pkg;
         SW,
         NO_LSU
     } lsu_op;
+
+    //a package of control signals
+    typedef struct packed {
+        logic alu_en;
+        alu_op alu_op; 
+        alu_a_src alu_a_src;
+        alu_b_src alu_b_src;
+
+        //Comparator related
+        logic comp_en;
+        comp_op comp_op;
+
+        //branch and jump
+        branch_op branch_op;
+        jump_op jump_op;
+
+        //Source and destinations
+        logic [4:0] rs1_addr; 
+        logic use_rs1;
+        logic [4:0] rs2_addr;
+        logic use_rs2;
+        logic [4:0] rd_addr;
+        logic use_rd;
+        logic reg_write;
+
+        //memory
+        logic lsu_en;
+
+        //misc
+        logic [31:0] instr_pc;
+
+        lsu_op  lsu_op;
+        logic [31:0] imm_value;
+
+        logic [31:0] rs1_data;
+        logic [31:0] rs2_data;
+    } idex_ctrl_signals_t;
+
 
 
 endpackage

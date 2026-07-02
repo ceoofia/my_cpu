@@ -11,7 +11,9 @@ RTL = \
 	Imm_Parser.sv \
 	IF_ID_Reg.sv \
 	Decoder.sv \
-	Register_File.sv
+	Register_File.sv \
+	ID_Stage.sv \
+	ID_EX_Reg.sv
 
 TB = testbenches/$(TARGET).sv
 

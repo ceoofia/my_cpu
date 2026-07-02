@@ -32,13 +32,13 @@ module Decoder(
     //memory
     output logic lsu_en_out,
     output logic [6:0] opcode_out,
+    output cpu_pkg::lsu_op  lsu_op_out,
 
     //misc
     output logic [31:0] instr_pc_out,
 
     //For Immediate Parser
-    output cpu_pkg::imm_sel imm_type_out,
-    output cpu_pkg::lsu_op  lsu_op_out
+    output cpu_pkg::imm_sel imm_type_out
 );  
     logic [6:0] funct7;
     logic [2:0] funct3;
@@ -78,7 +78,7 @@ module Decoder(
         alu_b_src_out = ALU_B_NOP;
         reg_write = 1'b0;
         lsu_en_out = 1'b0;
-        alu_op_out = NO_ALU;
+        alu_op_out = ALU_NOP;
         lsu_op_out = NO_LSU;
 
         if(!instr_valid_in || insert_NOP_bubble_in) begin
@@ -92,7 +92,7 @@ module Decoder(
             alu_b_src_out = ALU_B_NOP;
             reg_write = 1'b0;
             lsu_en_out = 1'b0;
-            alu_op_out = NO_ALU;
+            alu_op_out = ALU_NOP;
 
         end else begin
             case(instr_data_in[6:0])
