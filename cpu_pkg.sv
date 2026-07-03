@@ -108,17 +108,17 @@ package cpu_pkg;
     //a package of control signals
     typedef struct packed {
         logic alu_en;
-        alu_op alu_op; 
-        alu_a_src alu_a_src;
-        alu_b_src alu_b_src;
+        alu_op alu_op_type; 
+        alu_a_src alu_a_src_sel;
+        alu_b_src alu_b_src_sel;
 
         //Comparator related
         logic comp_en;
-        comp_op comp_op;
+        comp_op comp_op_type;
 
         //branch and jump
-        branch_op branch_op;
-        jump_op jump_op;
+        branch_op branch_op_type;
+        jump_op jump_op_type;
 
         //Source and destinations
         logic [4:0] rs1_addr; 
@@ -135,7 +135,7 @@ package cpu_pkg;
         //misc
         logic [31:0] instr_pc;
 
-        lsu_op  lsu_op;
+        lsu_op  lsu_op_type;
         logic [31:0] imm_value;
 
         logic [31:0] rs1_data;

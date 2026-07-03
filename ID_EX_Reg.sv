@@ -10,15 +10,15 @@ module ID_EX_Reg (
     always_ff @(posedge clk) begin
         if(reset) begin
             id_ex_ctrl_signals.alu_en <= 1'b1;
-            id_ex_ctrl_signals.alu_op <= ALU_NOP;
-            id_ex_ctrl_signals.alu_a_src <= ALU_A_NOP;
-            id_ex_ctrl_signals.alu_b_src <= ALU_B_NOP;
+            id_ex_ctrl_signals.alu_op_type <= ALU_NOP;
+            id_ex_ctrl_signals.alu_a_src_sel <= ALU_A_NOP;
+            id_ex_ctrl_signals.alu_b_src_sel <= ALU_B_NOP;
 
             id_ex_ctrl_signals.comp_en <= 1'b0;
-            id_ex_ctrl_signals.comp_op <= NO_COMP;
+            id_ex_ctrl_signals.comp_op_type <= NO_COMP;
 
-            id_ex_ctrl_signals.branch_op <= NO_BRANCH;
-            id_ex_ctrl_signals.jump_op <= NO_JUMP;
+            id_ex_ctrl_signals.branch_op_type <= NO_BRANCH;
+            id_ex_ctrl_signals.jump_op_type <= NO_JUMP;
 
             id_ex_ctrl_signals.rs1_addr = 5'h0;
             id_ex_ctrl_signals.use_rs1 = 1'b0;
@@ -30,7 +30,7 @@ module ID_EX_Reg (
 
             id_ex_ctrl_signals.lsu_en = 1'b0;
             id_ex_ctrl_signals.instr_pc = 32'h0;
-            id_ex_ctrl_signals.lsu_op = NO_LSU;
+            id_ex_ctrl_signals.lsu_op_type = NO_LSU;
 
             id_ex_ctrl_signals.rs1_data = 32'h0;
             id_ex_ctrl_signals.rs2_data = 32'h0;

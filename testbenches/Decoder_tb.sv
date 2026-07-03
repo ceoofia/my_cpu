@@ -157,7 +157,7 @@ module Decoder_tb;
             ALU_OR:     return "ALU OR";
             ALU_XOR:    return "ALU XOR";
             ALU_NULL:   return "ALU NULL";
-            NO_ALU:     return "NO_ALU";
+            ALU_NOP:     return "NO_ALU";
             default:    return "UNKNOWN";
         endcase
     endfunction

@@ -54,36 +54,38 @@ module ID_Stage (
     cpu_pkg::imm_sel id_imm_type;
     logic [31:0] id_imm;
 
+    always_comb begin
+        id_ctrl_signals.alu_en      = id_alu_en;
+        id_ctrl_signals.alu_op_type      = id_alu_op;
+        id_ctrl_signals.alu_a_src_sel   = id_alu_a_src;
+        id_ctrl_signals.alu_b_src_sel   = id_alu_b_src;
+
+        id_ctrl_signals.comp_en     = id_comp_en;
+        id_ctrl_signals.comp_op_type     = id_comp_op;
+
+        id_ctrl_signals.branch_op_type   = id_branch_op;
+        id_ctrl_signals.jump_op_type     = id_jump_op;
+
+        id_ctrl_signals.rs1_addr    = id_rs1_addr;
+        id_ctrl_signals.use_rs1     = id_use_rs1;
+        id_ctrl_signals.rs2_addr    = id_rs2_addr;
+        id_ctrl_signals.use_rs2     = id_use_rs2;
+        id_ctrl_signals.rd_addr     = id_rd_addr;
+        id_ctrl_signals.use_rd      = id_use_rd;
+        id_ctrl_signals.reg_write   = id_reg_write;
+
+        id_ctrl_signals.lsu_en      = id_lsu_en;
+
+        id_ctrl_signals.instr_pc    = id_instr_pc;
+
+        id_ctrl_signals.lsu_op_type      = id_lsu_op;
+        id_ctrl_signals.imm_value   = id_imm;
+
+        id_ctrl_signals.rs1_data    = id_rs1_data;
+        id_ctrl_signals.rs2_data    = id_rs2_data;
+    end
     //assigning outputs
-    assign id_ctrl_signals.alu_en      = id_alu_en;
-    assign id_ctrl_signals.alu_op      = id_alu_op;
-    assign id_ctrl_signals.alu_a_src   = id_alu_a_src;
-    assign id_ctrl_signals.alu_b_src   = id_alu_b_src;
-
-    assign id_ctrl_signals.comp_en     = id_comp_en;
-    assign id_ctrl_signals.comp_op     = id_comp_op;
-
-    assign id_ctrl_signals.branch_op   = id_branch_op;
-    assign id_ctrl_signals.jump_op     = id_jump_op;
-
-    assign id_ctrl_signals.rs1_addr    = id_rs1_addr;
-    assign id_ctrl_signals.use_rs1     = id_use_rs1;
-    assign id_ctrl_signals.rs2_addr    = id_rs2_addr;
-    assign id_ctrl_signals.use_rs2     = id_use_rs2;
-    assign id_ctrl_signals.rd_addr     = id_rd_addr;
-    assign id_ctrl_signals.use_rd      = id_use_rd;
-    assign id_ctrl_signals.reg_write   = id_reg_write;
-
-    assign id_ctrl_signals.lsu_en      = id_lsu_en;
-
-    assign id_ctrl_signals.instr_pc    = id_instr_pc;
-
-    assign id_ctrl_signals.lsu_op      = id_lsu_op;
-    assign id_ctrl_signals.imm_value   = id_imm;
-
-    assign id_ctrl_signals.rs1_data    = id_rs1_data;
-    assign id_ctrl_signals.rs2_data    = id_rs2_data;
-
+    
     Decoder ID_Decoder (
     .instr_data_in(id_instr_data_in),
     .instr_valid_in(id_instr_valid_in),

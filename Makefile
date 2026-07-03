@@ -13,7 +13,8 @@ RTL = \
 	Decoder.sv \
 	Register_File.sv \
 	ID_Stage.sv \
-	ID_EX_Reg.sv
+	ID_EX_Reg.sv \
+	Stall_Controller.sv
 
 TB = testbenches/$(TARGET).sv
 
