@@ -148,6 +148,14 @@ module ID_Stage_tb;
 
         @(posedge clk);
         drive_and_view_instr(1, 32'h007882b3, 1'b1, 1'b0); // add x5, x17, x7
+
+
+        set_reg(4, 32'h123);
+        set_reg(3, 32'h123);
+        @(posedge clk);
+        drive_and_view_instr(2, 32'h00320b63, 1'b1, 1'b0); //beq x4, x3, 22
+
+        $display("------------------------------------");
         $finish;
     end
 endmodule

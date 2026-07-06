@@ -23,6 +23,8 @@ module ID_Stage (
     //Comparator related
     logic id_comp_en;
     cpu_pkg::comp_op id_comp_op;
+    cpu_pkg::comp_a_src id_comp_a_src;
+    cpu_pkg::comp_b_src id_comp_b_src;
 
     //branch and jump
     cpu_pkg::branch_op id_branch_op;
@@ -62,6 +64,8 @@ module ID_Stage (
 
         id_ctrl_signals.comp_en     = id_comp_en;
         id_ctrl_signals.comp_op_type     = id_comp_op;
+        id_ctrl_signals.comp_a_src_sel     = id_comp_a_src;
+        id_ctrl_signals.comp_b_src_sel     = id_comp_b_src;
 
         id_ctrl_signals.branch_op_type   = id_branch_op;
         id_ctrl_signals.jump_op_type     = id_jump_op;
@@ -78,7 +82,7 @@ module ID_Stage (
 
         id_ctrl_signals.instr_pc    = id_instr_pc;
 
-        id_ctrl_signals.lsu_op_type      = id_lsu_op;
+        id_ctrl_signals.lsu_op_type = id_lsu_op;
         id_ctrl_signals.imm_value   = id_imm;
 
         id_ctrl_signals.rs1_data    = id_rs1_data;
@@ -99,6 +103,8 @@ module ID_Stage (
 
     .comp_en_out(id_comp_en),
     .comp_op_out(id_comp_op),
+    .comp_a_src_out(id_comp_a_src),
+    .comp_b_src_out(id_comp_b_src),
 
     .branch_op_out(id_branch_op),
     .jump_op_out(id_jump_op),

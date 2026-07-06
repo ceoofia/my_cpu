@@ -79,6 +79,17 @@ package cpu_pkg;
         ALU_B_IMM,
         ALU_B_NOP
     } alu_b_src;
+    
+    typedef enum logic [1:0] {
+        COMP_A_RS1,
+        COMP_A_NOP
+    } comp_a_src;
+
+    typedef enum logic [1:0] {
+        COMP_B_RS2,
+        COMP_B_IMM,
+        COMP_B_NOP
+    } comp_b_src;
 
     typedef enum logic [2:0] {
         NO_BRANCH,
@@ -105,6 +116,18 @@ package cpu_pkg;
         NO_LSU
     } lsu_op;
 
+    typedef enum logic [1:0] {
+        RS1_FW_EX,
+        RS1_FW_MEM,
+        RS1_NO_FW
+    } fw_rs1_sel;
+
+    typedef enum logic [1:0] {
+        RS2_FW_EX,
+        RS2_FW_MEM,
+        RS2_NO_FW
+    } fw_rs2_sel;
+
     //a package of control signals
     typedef struct packed {
         logic alu_en;
@@ -115,6 +138,8 @@ package cpu_pkg;
         //Comparator related
         logic comp_en;
         comp_op comp_op_type;
+        comp_a_src comp_a_src_sel;
+        comp_b_src comp_b_src_sel;
 
         //branch and jump
         branch_op branch_op_type;

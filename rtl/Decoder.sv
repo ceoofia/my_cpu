@@ -15,6 +15,8 @@ module Decoder(
     //Comparator related
     output logic comp_en_out,
     output cpu_pkg::comp_op comp_op_out,
+    output cpu_pkg::comp_a_src comp_a_src_out,
+    output cpu_pkg::comp_b_src comp_b_src_out,
 
     //branch and jump
     output cpu_pkg::branch_op branch_op_out,
@@ -80,6 +82,8 @@ module Decoder(
         lsu_en_out = 1'b0;
         alu_op_out = ALU_NOP;
         lsu_op_out = NO_LSU;
+        comp_a_src_out = COMP_A_NOP;
+        comp_b_src_out = COMP_B_NOP;
 
         if(!instr_valid_in || insert_NOP_bubble_in) begin
             comp_en_out = 1'b0;
@@ -93,6 +97,8 @@ module Decoder(
             reg_write = 1'b0;
             lsu_en_out = 1'b0;
             alu_op_out = ALU_NOP;
+            comp_a_src_out = COMP_A_NOP;
+            comp_b_src_out = COMP_B_NOP;
 
         end else begin
             case(instr_data_in[6:0])
@@ -101,36 +107,46 @@ module Decoder(
                         10'b0000000_000: begin //ADD
                             alu_op_out = ALU_ADD;  
                             alu_en_out = 1'b1;
+                            alu_a_src_out = ALU_A_RS1;
+                            alu_b_src_out = ALU_B_RS2;
                         end 
                         10'b0100000_000: begin //SUB
                             alu_op_out = ALU_SUB;
                             alu_en_out = 1'b1;
+                            alu_a_src_out = ALU_A_RS1;
+                            alu_b_src_out = ALU_B_RS2;  
                         end  
 
                         10'b0000000_111: begin //AND
                             alu_op_out = ALU_AND; 
                             alu_en_out = 1'b1;
+                            alu_a_src_out = ALU_A_RS1;
+                            alu_b_src_out = ALU_B_RS2;  
                         end
 
                         10'b0000000_110: begin //OR
                             alu_op_out = ALU_OR;
                             alu_en_out = 1'b1;
+                            alu_a_src_out = ALU_A_RS1;
+                            alu_b_src_out = ALU_B_RS2;  
                         end   
 
                         10'b0000000_100: begin //XOR
                             alu_op_out = ALU_XOR;
                             alu_en_out = 1'b1;
+                            alu_a_src_out = ALU_A_RS1;
+                            alu_b_src_out = ALU_B_RS2;  
                         end
                         
                         10'b0000000_010: begin //SLT
                             comp_op_out = COMP_SLT;
                             comp_en_out = 1'b1;
+                            comp_a_src_out = COMP_A_RS1;
+                            comp_b_src_out = COMP_B_RS2;
                         end
                         default: alu_op_out = ALU_NULL;
                     endcase
 
-                    alu_a_src_out = ALU_A_RS1;
-                    alu_b_src_out = ALU_B_RS2;
 
                     use_rs1_out = 1'b1;
                     use_rs2_out = 1'b1;
@@ -143,28 +159,33 @@ module Decoder(
                         3'b000: begin //addi
                             alu_op_out = ALU_ADD;
                             alu_en_out = 1'b1;
+                            alu_a_src_out = ALU_A_RS1;
+                            alu_b_src_out = ALU_B_IMM;
                         end
 
                         3'b010: begin //slti
                             comp_op_out = COMP_SLT; 
                             comp_en_out = 1'b1;
+                            comp_a_src_out = COMP_A_RS1;
+                            comp_b_src_out = COMP_B_IMM;
                         end
                         
                         3'b111: begin //andi
                             alu_op_out = ALU_AND;
                             alu_en_out = 1'b1;
+                            alu_a_src_out = ALU_A_RS1;
+                            alu_b_src_out = ALU_B_IMM;
                         end
 
                         3'b110: begin //OR
                             alu_op_out = ALU_OR;  
                             alu_en_out = 1'b1;
+                            alu_a_src_out = ALU_A_RS1;
+                            alu_b_src_out = ALU_B_IMM;
                         end
                               
                         default: alu_op_out = ALU_NULL;
                     endcase
-
-                    alu_a_src_out = ALU_A_RS1;
-                    alu_b_src_out = ALU_B_IMM;
 
                     use_rs1_out = 1'b1;
                     use_rs2_out = 1'b0;
@@ -224,6 +245,8 @@ module Decoder(
                     alu_b_src_out = ALU_B_IMM;
                     alu_op_out = ALU_ADD;
                     comp_en_out = 1'b1;
+                    comp_a_src_out = COMP_A_RS1;
+                    comp_b_src_out = COMP_B_RS2;
 
                     use_rs1_out = 1'b1;
                     use_rs2_out = 1'b1;

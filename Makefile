@@ -1,20 +1,8 @@
 TARGET ?= IF_Stage_tb
 OUT_DIR = output_dump
 
-PKG = cpu_pkg.sv
-
-RTL = \
-	PC_Fetch.sv \
-	Instr_Mem.sv \
-	Branch_Predictor.sv \
-	IF_Stage.sv \
-	Imm_Parser.sv \
-	IF_ID_Reg.sv \
-	Decoder.sv \
-	Register_File.sv \
-	ID_Stage.sv \
-	ID_EX_Reg.sv \
-	Stall_Controller.sv
+PKG = rtl/cpu_pkg.sv
+RTL := $(wildcard rtl/*.sv)
 
 TB = testbenches/$(TARGET).sv
 
