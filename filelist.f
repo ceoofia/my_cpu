@@ -1,0 +1,17 @@
+rtl/cpu_pkg.sv
+rtl/ALU.sv
+rtl/Branch_Predictor.sv
+rtl/Comparator.sv
+rtl/Decoder.sv
+rtl/EX_Operand_Parser.sv
+rtl/EX_Result_Sel.sv
+rtl/Forward_Mux.sv
+rtl/ID_EX_Reg.sv
+rtl/ID_Stage.sv
+rtl/IF_ID_Reg.sv
+rtl/IF_Stage.sv
+rtl/Imm_Parser.sv
+rtl/Instr_Mem.sv
+rtl/PC_Fetch.sv
+rtl/Register_File.sv
+rtl/Stall_Controller.sv

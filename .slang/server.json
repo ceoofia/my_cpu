@@ -1,0 +1,20 @@
+{
+    "flags": "-f filelist.f --sv",
+    "index": [
+        {
+            "dirs": [
+                "rtl"
+            ],
+            "excludeDirs": [
+                "build",
+                "sim",
+                "node_modules"
+            ]
+        }
+    ],
+    "build": "filelist.f",
+    "diagnostics": false,
+    "suppress": [
+        "unused-wildcard-import"
+    ]
+}

@@ -104,8 +104,9 @@ package cpu_pkg;
     } jump_op;
 
     typedef enum logic [2:0] {
-        COMP_BEQ,
-        COMP_BNE,
+        COMP_EQ,
+        COMP_NE,
+        COMP_LT,
         COMP_SLT,
         NO_COMP
     } comp_op;

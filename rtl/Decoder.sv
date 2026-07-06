@@ -139,7 +139,7 @@ module Decoder(
                         end
                         
                         10'b0000000_010: begin //SLT
-                            comp_op_out = COMP_SLT;
+                            comp_op_out = COMP_LT;
                             comp_en_out = 1'b1;
                             comp_a_src_out = COMP_A_RS1;
                             comp_b_src_out = COMP_B_RS2;
@@ -164,7 +164,7 @@ module Decoder(
                         end
 
                         3'b010: begin //slti
-                            comp_op_out = COMP_SLT; 
+                            comp_op_out = COMP_LT; 
                             comp_en_out = 1'b1;
                             comp_a_src_out = COMP_A_RS1;
                             comp_b_src_out = COMP_B_IMM;
@@ -231,12 +231,12 @@ module Decoder(
                     case(funct3)
                         BEQ_FUNCT3: begin
                             branch_op_out = BRANCH_BEQ;
-                            comp_op_out = COMP_BEQ;
+                            comp_op_out = COMP_EQ;
                         end
 
                         BNE_FUNCT3: begin
                             branch_op_out = BRANCH_BNE;
-                            comp_op_out = COMP_BNE;
+                            comp_op_out = COMP_NE;
                         end 
                         default: branch_op_out = NO_BRANCH;
                     endcase
