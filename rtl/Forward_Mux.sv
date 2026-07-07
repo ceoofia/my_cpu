@@ -1,6 +1,7 @@
 /*
     A unit that deals with forwarded data to assist the operand parser.
 */
+`timescale 1ns/1ps
 import cpu_pkg::*;
 
 module Forward_Mux (

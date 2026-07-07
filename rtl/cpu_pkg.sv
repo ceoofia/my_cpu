@@ -9,6 +9,7 @@
     U-type: LUI
     J-type: JAL
 */
+`timescale 1ns/1ps
 
 package cpu_pkg;
 
@@ -132,7 +133,7 @@ package cpu_pkg;
     //a package of control signals
     typedef struct packed {
         logic alu_en;
-        alu_op alu_op_type; 
+        alu_op alu_op_type;
         alu_a_src alu_a_src_sel;
         alu_b_src alu_b_src_sel;
 

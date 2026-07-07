@@ -1,3 +1,6 @@
+`timescale 1ns/1ps
+import cpu_pkg::*;
+
 module ALU_tb;
     logic [31:0] alu_operand_a_in;
     logic [31:0] alu_operand_b_in;

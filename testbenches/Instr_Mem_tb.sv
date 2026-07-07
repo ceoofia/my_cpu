@@ -1,4 +1,5 @@
 `timescale 1ns/1ps
+import cpu_pkg::*;
 
 module Instr_Mem_tb;
     //internal logics
@@ -16,7 +17,6 @@ module Instr_Mem_tb;
     Instr_Mem #(
         .MEM_WIDTH(1024)
         ) dut (
-        .clk(clk),
         .mem_en(mem_en),
 
         .instr_req_valid(instr_req_valid),

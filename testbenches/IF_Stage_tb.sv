@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module IF_Stage_tb;
     logic clk;
     logic reset;

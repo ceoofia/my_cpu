@@ -5,7 +5,7 @@
     2'b10: Weakly Taken
     2'b11: Strongly Taken
 */
-
+`timescale 1ns/1ps
 import cpu_pkg::*;
 
 module Branch_Predictor (

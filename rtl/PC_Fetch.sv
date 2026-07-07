@@ -1,3 +1,4 @@
+`timescale 1ns/1ps
 import cpu_pkg::*;
 
 module PC_Fetch (

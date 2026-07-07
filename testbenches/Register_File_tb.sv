@@ -1,4 +1,5 @@
 `timescale 1ns/1ps
+import cpu_pkg::*;
  
 module Register_File_tb;
     logic clk;
@@ -36,7 +37,7 @@ module Register_File_tb;
         input logic [31:0] expected_tb
     );
         #1;
-        assert(dut.Register_array[addr_tb] == expected_tb);
+        assert(dut.Register_array[addr_tb] == expected_tb)
         else
             $fatal(1, "Test %0d failed. Expected : %0h, DUT: %0h", testnum, expected_tb, dut.Register_array[addr_tb]);
     endtask

@@ -1,0 +1,27 @@
+TARGET ?= ID_Stage_tb
+OUT_DIR = output_dump
+OBJ_DIR = obj_dir
+
+PKG = rtl/cpu_pkg.sv
+RTL := $(filter-out $(PKG),$(wildcard rtl/*.sv))
+TB = testbenches/$(TARGET).sv
+
+VERILATOR = verilator \
+    -CFLAGS "-std=gnu++17" \
+    -LDFLAGS "-lstdc++"
+
+all: run
+
+build:
+	$(VERILATOR) --binary --timing --sv -Wall -Wno-fatal \
+		--top-module $(TARGET) \
+		$(PKG) $(RTL) $(TB)
+
+run: build
+	./$(OBJ_DIR)/V$(TARGET)
+
+clean:
+	rm -rf $(OUT_DIR) $(OBJ_DIR)
+
+.PHONY: all build run clean
+

@@ -1,3 +1,6 @@
+`timescale 1ns/1ps
+import cpu_pkg::*;
+
 module Imm_Parser_tb;
 
     logic [31:0] instr_data_in;

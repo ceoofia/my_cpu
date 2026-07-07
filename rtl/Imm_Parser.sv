@@ -1,7 +1,7 @@
 /*
     An immediate parser in the decode stage
 */
-
+`timescale 1ns/1ps
 import cpu_pkg::*;
 
 module Imm_Parser(

@@ -15,3 +15,12 @@ rtl/Instr_Mem.sv
 rtl/PC_Fetch.sv
 rtl/Register_File.sv
 rtl/Stall_Controller.sv
+testbenches/ALU_tb.sv
+testbenches/Branch_Predictor_tb.sv
+testbenches/Decoder_tb.sv
+testbenches/ID_Stage_tb.sv
+testbenches/IF_Stage_tb.sv
+testbenches/Imm_Parser_tb.sv
+testbenches/Instr_Mem_tb.sv
+testbenches/PC_Fetch_tb.sv
+testbenches/Register_File_tb.sv

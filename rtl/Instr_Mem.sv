@@ -1,4 +1,5 @@
 //instruction memory for the processor, a 8x1024 MEM
+`timescale 1ns/1ps
 import cpu_pkg::*;
 
 module Instr_Mem #(
