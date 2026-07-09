@@ -19,7 +19,7 @@ module EX_Result_Parser (
     end
 
     always_comb begin
-        if(ctrl_signals_in.comp_op_type != NO_BRANCH) begin
+        if(ctrl_signals_in.branch_op_type != NO_BRANCH) begin
             pc_redirect_dest_out = alu_result_in;
             pc_redirect_valid_out = comp_result_in;
         end else if (ctrl_signals_in.jump_op_type == JUMP_JAL) begin

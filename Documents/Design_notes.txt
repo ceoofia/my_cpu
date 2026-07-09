@@ -1,0 +1,10 @@
+CPU stages:
+IF -> Decode -> Execute -> Memory -> WriteBack
+
+Following instructions are supported: 
+    R-type: ADD, SUB, AND, OR, XOR, SLT
+    I-type: ADDI, ANDI, ORI, SLTI, LW, JALR
+    S-type: SW
+    B-type: BEQ, BNE
+    U-type: LUI
+    J-type: JAL

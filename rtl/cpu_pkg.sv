@@ -130,7 +130,7 @@ package cpu_pkg;
         RS2_NO_FW
     } fw_rs2_sel;
 
-    //a package of control signals
+    //a package of control signals for id to pass to ex
     typedef struct packed {
         logic alu_en;
         alu_op alu_op_type;
@@ -168,6 +168,21 @@ package cpu_pkg;
         logic [31:0] rs1_data;
         logic [31:0] rs2_data;
     } idex_ctrl_signals_t;
+
+    typedef struct packed {
+        //Destinations
+        logic [4:0] rd_addr;
+        logic use_rd;
+        logic reg_write;
+
+        //memory
+        logic lsu_en;
+        lsu_op  lsu_op_type;
+
+        logic [31:0] ex_result;
+        logic [31:0] pc_redirect_dest;
+        logic pc_redirect_valid;
+    } exmem_ctrl_signals_t;
 
 
 
