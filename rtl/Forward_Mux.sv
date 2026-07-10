@@ -8,7 +8,7 @@ module Forward_Mux (
     //data from ex stage
     input logic [31:0] rs1_fw_ex_data,
     input logic [31:0] rs2_fw_ex_data,
-    
+
     //data from mem stage
     input logic [31:0] rs1_fw_mem_data,
     input logic [31:0] rs2_fw_mem_data,
@@ -17,36 +17,30 @@ module Forward_Mux (
     input cpu_pkg::fw_rs2_sel fw_rs2_sel_in,
 
     //from idex reg
-    input cpu_pkg::idex_ctrl_signals_t fw_mux_ctrl_signals_in,
+    input logic [31:0] rs1_data_in,
+    input logic [31:0] rs2_data_in,
 
-    output cpu_pkg::idex_ctrl_signals_t fw_mux_ctrl_signals_out
+    output logic [31:0] fw_mux_rs1_data_out,
+    output logic [31:0] fw_mux_rs2_data_out
 );
 
-    logic [31:0] rs1;
-    logic [31:0] rs2;
-
-    always_comb begin
-        fw_mux_ctrl_signals_out = fw_mux_ctrl_signals_in;
-        fw_mux_ctrl_signals_out.rs1_data = rs1;
-        fw_mux_ctrl_signals_out.rs2_data = rs2;
-    end
 
     always_comb begin
         case(fw_rs1_sel_in)
-            RS1_FW_EX: rs1 = rs1_fw_ex_data;
-            RS1_FW_MEM: rs1 = rs1_fw_mem_data;
-            RS1_NO_FW: rs1 = fw_mux_ctrl_signals_in.rs1_data;
-            default: rs1 = fw_mux_ctrl_signals_in.rs1_data;
+            RS1_FW_EX: fw_mux_rs1_data_out = rs1_fw_ex_data;
+            RS1_FW_MEM: fw_mux_rs1_data_out = rs1_fw_mem_data;
+            RS1_NO_FW: fw_mux_rs1_data_out = rs1_data_in;
+            default: fw_mux_rs1_data_out = rs1_data_in;
         endcase
     end
 
     always_comb begin
         case(fw_rs2_sel_in)
-            RS2_FW_EX: rs2 = rs2_fw_ex_data;
-            RS2_FW_MEM: rs2 = rs2_fw_mem_data;
-            RS2_NO_FW: rs2 = fw_mux_ctrl_signals_in.rs2_data;
-            default: rs2 = fw_mux_ctrl_signals_in.rs2_data;
+            RS2_FW_EX: fw_mux_rs2_data_out = rs2_fw_ex_data;
+            RS2_FW_MEM: fw_mux_rs2_data_out = rs2_fw_mem_data;
+            RS2_NO_FW: fw_mux_rs2_data_out = rs2_data_in;
+            default: fw_mux_rs2_data_out = rs2_data_in;
         endcase
     end
-    
+
 endmodule

@@ -1,1 +1,1 @@
-make -f Makefile.ucrt64 TARGET=ID_Stage_tb used to run ucrt64
+make -f Makefile.ucrt64 TARGET=<testbench>_tb used to run ucrt64

@@ -17,7 +17,7 @@ module ID_Stage (
 );
 
     logic id_alu_en;
-    cpu_pkg::alu_op id_alu_op; 
+    cpu_pkg::alu_op id_alu_op;
     cpu_pkg::alu_a_src id_alu_a_src;
     cpu_pkg::alu_b_src id_alu_b_src;
 
@@ -32,7 +32,7 @@ module ID_Stage (
     cpu_pkg::jump_op id_jump_op;
 
     //Source and destinations
-    logic [4:0] id_rs1_addr; 
+    logic [4:0] id_rs1_addr;
     logic id_use_rs1;
     logic [4:0] id_rs2_addr;
     logic id_use_rs2;
@@ -90,7 +90,7 @@ module ID_Stage (
         id_ctrl_signals.rs2_data    = id_rs2_data;
     end
     //assigning outputs
-    
+
     Decoder ID_Decoder (
     .instr_data_in(id_instr_data_in),
     .instr_valid_in(id_instr_valid_in),
@@ -127,12 +127,6 @@ module ID_Stage (
     .lsu_op_out(id_lsu_op)
 );
 
-Stall_Controller ID_Stall_Controller (
-    .dummy_inputs(1'b0), //TODO: ADD the inputs later
-
-    .stall_out(id_stall)
-);
-
 Imm_Parser ID_Imm_Parser (
     .instr_data_in(id_instr_data_in),
     .imm_type_in(id_imm_type),
@@ -156,6 +150,6 @@ Register_File #(
     .rd_data_in(wb_rd_data_in),
     .write_en_in(wb_reg_write_in)
 );
-    
+
 
 endmodule

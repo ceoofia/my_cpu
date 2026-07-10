@@ -28,7 +28,7 @@ module PC_Fetch (
             next_pc = redirect_dest_in;
         else if (branch_predicted_in)
             next_pc = branch_dest_in;
-        else    
+        else
             next_pc = current_pc + 4;
     end
 

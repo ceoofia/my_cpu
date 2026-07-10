@@ -9,7 +9,7 @@ module Decoder(
     
     //ALU related
     output logic alu_en_out,
-    output cpu_pkg::alu_op alu_op_out, 
+    output cpu_pkg::alu_op alu_op_out,
     output cpu_pkg::alu_a_src alu_a_src_out,
     output cpu_pkg::alu_b_src alu_b_src_out,
 
@@ -24,7 +24,7 @@ module Decoder(
     output cpu_pkg::jump_op jump_op_out,
 
     //Source and destinations
-    output logic [4:0] rs1_addr_out, 
+    output logic [4:0] rs1_addr_out,
     output logic use_rs1_out,
     output logic [4:0] rs2_addr_out,
     output logic use_rs2_out,
@@ -264,7 +264,7 @@ module Decoder(
                     
                     use_rs1_out = 1'b0;
                     use_rs2_out = 1'b0;
-                    reg_write = 1'b1;
+                    reg_write = 1'b0;
                 end
 
                 OPCODE_JALR: begin

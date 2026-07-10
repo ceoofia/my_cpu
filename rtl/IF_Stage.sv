@@ -45,7 +45,7 @@ module IF_Stage #(
         .reset(reset),
 
         .stall_in(if_stall_in),
-        
+
         .redirect_valid_in(if_redirect_valid),
         .redirect_dest_in(if_redirect_dest),
 

@@ -4,7 +4,8 @@ rtl/Branch_Predictor.sv
 rtl/Comparator.sv
 rtl/Decoder.sv
 rtl/EX_Operand_Parser.sv
-rtl/EX_Result_Sel.sv
+rtl/EX_Result_Parser.sv
+rtl/EX_Stage.sv
 rtl/Forward_Mux.sv
 rtl/ID_EX_Reg.sv
 rtl/ID_Stage.sv
@@ -15,6 +16,7 @@ rtl/Instr_Mem.sv
 rtl/PC_Fetch.sv
 rtl/Register_File.sv
 rtl/Stall_Controller.sv
+rtl/Flush_Control.sv
 testbenches/ALU_tb.sv
 testbenches/Branch_Predictor_tb.sv
 testbenches/Decoder_tb.sv
@@ -24,3 +26,4 @@ testbenches/Imm_Parser_tb.sv
 testbenches/Instr_Mem_tb.sv
 testbenches/PC_Fetch_tb.sv
 testbenches/Register_File_tb.sv
+testbenches/EX_Stage_tb.sv

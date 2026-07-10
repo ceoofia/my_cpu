@@ -4,7 +4,7 @@ import cpu_pkg::*;
 module ID_EX_Reg (
     input clk,
     input reset,
-    
+
     input stall_in,
     input flush_in,
 

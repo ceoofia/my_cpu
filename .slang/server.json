@@ -1,5 +1,5 @@
 {
-    "flags": "-f filelist.f --sv",
+    "flags": "-f filelist.f",
     "index": [
         {
             "dirs": [

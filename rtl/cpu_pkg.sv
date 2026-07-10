@@ -180,8 +180,6 @@ package cpu_pkg;
         lsu_op  lsu_op_type;
 
         logic [31:0] ex_result;
-        logic [31:0] pc_redirect_dest;
-        logic pc_redirect_valid;
     } exmem_ctrl_signals_t;
 
 
