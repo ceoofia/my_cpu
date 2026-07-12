@@ -6,13 +6,13 @@ module ID_EX_Reg (
     input reset,
 
     input stall_in,
-    input flush_in,
+    input idex_flush_in,
 
     input cpu_pkg::idex_ctrl_signals_t id_ctrl_signals,
     output cpu_pkg::idex_ctrl_signals_t id_ex_ctrl_signals
 );
     always_ff @(posedge clk) begin
-        if(reset || stall_in || flush_in) begin
+        if(reset || stall_in || idex_flush_in) begin
             id_ex_ctrl_signals.alu_en <= 1'b1;
             id_ex_ctrl_signals.alu_op_type <= ALU_NOP;
             id_ex_ctrl_signals.alu_a_src_sel <= ALU_A_NOP;

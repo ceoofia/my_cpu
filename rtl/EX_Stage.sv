@@ -37,6 +37,8 @@ module EX_Stage (
     logic [31:0] ex_int_redir_dest;
     logic ex_int_redir_valid;
 
+    logic [31:0] ex_store_data;
+
     assign exmem_ctrl_signals.rd_addr = idex_ctrl_signals.rd_addr;
     assign exmem_ctrl_signals.use_rd = idex_ctrl_signals.use_rd;
     assign exmem_ctrl_signals.reg_write = idex_ctrl_signals.reg_write;
@@ -45,6 +47,8 @@ module EX_Stage (
     assign exmem_ctrl_signals.lsu_op_type = idex_ctrl_signals.lsu_op_type;
 
     assign exmem_ctrl_signals.ex_result = ex_int_result;
+    assign exmem_ctrl_signals.store_data = ex_store_data;
+
     assign pc_redirect_dest_out = ex_int_redir_dest;
     assign pc_redirect_valid = ex_int_redir_valid;
 
@@ -105,7 +109,9 @@ module EX_Stage (
     EX_Result_Parser ex_int_result_parser (
         .alu_result_in(ex_alu_result),
         .comp_result_in(ex_comp_result),
+        .rs2_data_in(idex_ctrl_signals.rs2_data),
 
+        .lsu_op_in(idex_ctrl_signals.lsu_op_type),
         .branch_op_in(idex_ctrl_signals.branch_op_type),
         .jump_op_in(idex_ctrl_signals.jump_op_type),
         .comp_op_in(idex_ctrl_signals.comp_op_type),
@@ -113,7 +119,8 @@ module EX_Stage (
         .EX_Result_out(ex_int_result),
 
         .pc_redirect_dest_out(ex_int_redir_dest),
-        .pc_redirect_valid_out(ex_int_redir_valid)
+        .pc_redirect_valid_out(ex_int_redir_valid),
+        .store_data_out(ex_store_data)
     );
 
 endmodule

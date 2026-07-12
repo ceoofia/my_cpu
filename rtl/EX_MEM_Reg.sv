@@ -9,7 +9,6 @@ module EX_MEM_Reg (
 
     output exmem_ctrl_signals_t mem_ctrl_signals
 );
-    
     always_ff @(posedge clk) begin
         if(reset) begin
             mem_ctrl_signals.rd_addr <= 32'h0;
@@ -20,6 +19,7 @@ module EX_MEM_Reg (
             mem_ctrl_signals.lsu_op_type <= NO_LSU;
 
             mem_ctrl_signals.ex_result <= 32'h0;
+            mem_ctrl_signals.store_data <= 32'h0;
         end else begin
             mem_ctrl_signals <= ex_ctrl_signals;
         end

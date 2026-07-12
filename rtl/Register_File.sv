@@ -19,7 +19,7 @@ module Register_File #(
 
 localparam NUM_WORDS = 2 ** ADDR_WIDTH;
 
-logic [DATA_WIDTH-1:0] Register_array [NUM_WORDS-1:0];
+logic [DATA_WIDTH-1:0] Register_array [NUM_WORDS];
 
 assign rs1_data_out = Register_array[rs1_addr_in];
 assign rs2_data_out = Register_array[rs2_addr_in];

@@ -17,6 +17,9 @@ rtl/PC_Fetch.sv
 rtl/Register_File.sv
 rtl/Stall_Controller.sv
 rtl/Flush_Control.sv
+rtl/MEM_Control.sv
+rtl/EX_MEM_Reg.sv
+rtl/Memory.sv
 testbenches/ALU_tb.sv
 testbenches/Branch_Predictor_tb.sv
 testbenches/Decoder_tb.sv

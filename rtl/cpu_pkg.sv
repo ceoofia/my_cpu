@@ -130,6 +130,20 @@ package cpu_pkg;
         RS2_NO_FW
     } fw_rs2_sel;
 
+    typedef enum logic [1:0] {
+        STORE_SIZE_WORD,
+        STORE_SIZE_HALF,
+        STORE_SIZE_BYTE,
+        NO_STORE_SIZE
+    } store_size_e;
+
+    typedef enum logic [1:0] {
+        LOAD_SIZE_WORD,
+        LOAD_SIZE_HALF,
+        LOAD_SIZE_BYTE,
+        NO_LOAD_SIZE
+    } load_size_e;
+
     //a package of control signals for id to pass to ex
     typedef struct packed {
         logic alu_en;
@@ -148,7 +162,7 @@ package cpu_pkg;
         jump_op jump_op_type;
 
         //Source and destinations
-        logic [4:0] rs1_addr; 
+        logic [4:0] rs1_addr;
         logic use_rs1;
         logic [4:0] rs2_addr;
         logic use_rs2;
@@ -180,6 +194,8 @@ package cpu_pkg;
         lsu_op  lsu_op_type;
 
         logic [31:0] ex_result;
+
+        logic [31:0] store_data;
     } exmem_ctrl_signals_t;
 
 

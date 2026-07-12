@@ -5,7 +5,9 @@ import cpu_pkg::*;
 module EX_Result_Parser (
     input logic [31:0] alu_result_in,
     input logic comp_result_in,
+    input logic [31:0] rs2_data_in, //used for SWs
 
+    input cpu_pkg::lsu_op lsu_op_in,
     input cpu_pkg::branch_op branch_op_in,
     input cpu_pkg::jump_op jump_op_in,
     input cpu_pkg::comp_op comp_op_in,
@@ -13,7 +15,8 @@ module EX_Result_Parser (
     output logic [31:0] EX_Result_out,
 
     output logic [31:0] pc_redirect_dest_out,
-    output logic pc_redirect_valid_out
+    output logic pc_redirect_valid_out,
+    output logic [31:0] store_data_out
 );
     always_comb begin
         if(comp_op_in === COMP_SLT)
@@ -37,4 +40,8 @@ module EX_Result_Parser (
             pc_redirect_valid_out = 1'b0;
         end
     end
+
+    //passes on rs2 for store type instructions
+    assign store_data_out = (lsu_op_in == SW)? 32'h0 : rs2_data_in;
+
 endmodule
