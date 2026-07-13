@@ -37,12 +37,15 @@ module Decoder(
     output logic [6:0] opcode_out,
     output cpu_pkg::lsu_op  lsu_op_out,
 
+    //write source select
+    output cpu_pkg::wb_src_e wb_src_sel_out,
+
     //misc
     output logic [31:0] instr_pc_out,
 
     //For Immediate Parser
     output cpu_pkg::imm_sel imm_type_out
-);  
+);
     logic [6:0] funct7;
     logic [2:0] funct3;
 
@@ -85,6 +88,7 @@ module Decoder(
         lsu_op_out = NO_LSU;
         comp_a_src_out = COMP_A_NOP;
         comp_b_src_out = COMP_B_NOP;
+        wb_src_sel_out = NO_WB;
 
         if(!instr_valid_in || insert_NOP_bubble_in) begin
             comp_en_out = 1'b0;
@@ -100,6 +104,7 @@ module Decoder(
             alu_op_out = ALU_NOP;
             comp_a_src_out = COMP_A_NOP;
             comp_b_src_out = COMP_B_NOP;
+            wb_src_sel_out = NO_WB;
 
         end else begin
             case(instr_data_in[6:0])
@@ -152,6 +157,8 @@ module Decoder(
                     use_rs1_out = 1'b1;
                     use_rs2_out = 1'b1;
                     reg_write = 1'b1;
+
+                    wb_src_sel_out = WB_RESULT_EX;
                 end
 
                 OPCODE_I_ALU: begin
@@ -191,6 +198,7 @@ module Decoder(
                     use_rs1_out = 1'b1;
                     use_rs2_out = 1'b0;
                     reg_write = 1'b1;
+                    wb_src_sel_out = WB_RESULT_EX;
                 end
 
                 OPCODE_LOAD: begin
@@ -211,6 +219,8 @@ module Decoder(
                     use_rs2_out = 1'b0;
                     reg_write = 1'b1;
                     lsu_en_out = 1'b1;
+
+                    wb_src_sel_out = WB_RESULT_MEM;
                 end
 
                 OPCODE_SW: begin
@@ -225,6 +235,8 @@ module Decoder(
                     use_rs2_out = 1'b1;
                     lsu_en_out = 1'b1;
                     lsu_op_out = SW;
+
+                    wb_src_sel_out = NO_WB;
                 end
 
                 OPCODE_BRANCH: begin
@@ -252,6 +264,7 @@ module Decoder(
                     use_rs1_out = 1'b1;
                     use_rs2_out = 1'b1;
                     reg_write = 1'b0;
+                    wb_src_sel_out = NO_WB;
                 end
 
                 OPCODE_JAL: begin
@@ -265,6 +278,7 @@ module Decoder(
                     use_rs1_out = 1'b0;
                     use_rs2_out = 1'b0;
                     reg_write = 1'b0;
+                    wb_src_sel_out = WB_RESULT_EX;
                 end
 
                 OPCODE_JALR: begin
@@ -279,6 +293,7 @@ module Decoder(
                     use_rs1_out = 1'b1;
                     use_rs2_out = 1'b0;
                     reg_write = 1'b1;
+                    wb_src_sel_out = WB_RESULT_EX;
                 end
 
                 OPCODE_LUI: begin

@@ -18,6 +18,8 @@ module EX_Stage_tb;
     logic [31:0] pc_redirect_dest_tb;
     logic pc_redirect_valid_tb;
 
+    logic [31:0] fw_data_tb; //same as the EX output
+
     //internal logics
     logic check_result;
     logic check_dest;
@@ -38,7 +40,9 @@ module EX_Stage_tb;
         .exmem_ctrl_signals (exmem_ctrl_signals),
 
         .pc_redirect_dest_out(pc_redirect_dest_tb),
-        .pc_redirect_valid(pc_redirect_valid_tb)
+        .pc_redirect_valid(pc_redirect_valid_tb),
+
+        .ex_fw_data(fw_data_tb)
     );
 
     task automatic reset_signals();

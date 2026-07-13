@@ -20,6 +20,7 @@ rtl/Flush_Control.sv
 rtl/MEM_Control.sv
 rtl/EX_MEM_Reg.sv
 rtl/Memory.sv
+rtl/MEM_Stage.sv
 testbenches/ALU_tb.sv
 testbenches/Branch_Predictor_tb.sv
 testbenches/Decoder_tb.sv

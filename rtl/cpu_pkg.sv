@@ -130,19 +130,25 @@ package cpu_pkg;
         RS2_NO_FW
     } fw_rs2_sel;
 
-    typedef enum logic [1:0] {
-        STORE_SIZE_WORD,
-        STORE_SIZE_HALF,
-        STORE_SIZE_BYTE,
-        NO_STORE_SIZE
+    typedef enum logic [2:0] {
+        STORE_SIZE_WORD = 3'd4,
+        STORE_SIZE_HALF = 3'd2,
+        STORE_SIZE_BYTE = 3'd1,
+        NO_STORE_SIZE = 3'd0
     } store_size_e;
 
     typedef enum logic [1:0] {
-        LOAD_SIZE_WORD,
-        LOAD_SIZE_HALF,
-        LOAD_SIZE_BYTE,
-        NO_LOAD_SIZE
+        LOAD_SIZE_WORD = 3'd4,
+        LOAD_SIZE_HALF = 3'd2,
+        LOAD_SIZE_BYTE = 3'd1,
+        NO_LOAD_SIZE = 3'd0
     } load_size_e;
+
+    typedef enum logic [1:0] { 
+        WB_RESULT_EX,
+        WB_RESULT_MEM,
+        NO_WB
+    } wb_src_e;
 
     //a package of control signals for id to pass to ex
     typedef struct packed {
@@ -197,6 +203,13 @@ package cpu_pkg;
 
         logic [31:0] store_data;
     } exmem_ctrl_signals_t;
+
+    typedef struct packed {
+        logic [4:0] rd_addr;
+        logic reg_write;
+
+        logic wb_result;
+    } memwb_ctrl_signals_t;
 
 
 

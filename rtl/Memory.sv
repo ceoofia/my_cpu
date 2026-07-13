@@ -2,7 +2,7 @@
 import cpu_pkg::*;
 
 module Memory #(
-    parameter MEM_DEPTH = 1024,
+    parameter MEM_DEPTH = 4096,
     parameter DATA_ADDR = 0
 ) (
     input logic clk,
@@ -28,8 +28,9 @@ module Memory #(
         if(reset) begin
             for(i = 0; i < MEM_DEPTH; i = i + 1) begin
                 mem[i] <= 8'h0;
-            end 
-        end else if (mem_en_in && mem_rw_in) begin
+            end
+        end else if (mem_en_in && mem_rw_in && addr_req_in + mem_store_size_in - 1 < MEM_DEPTH 
+            && mem_store_size_in != NO_STORE_SIZE) begin
                 case(mem_store_size_in)
                     STORE_SIZE_WORD: begin
                         mem[DATA_ADDR + addr_req_in] <= store_data_in [31:24];
@@ -46,7 +47,8 @@ module Memory #(
 
     always_comb begin
         mem_data_valid = 1'b0;
-        if(mem_en_in && !mem_rw_in) begin
+        if(mem_en_in && !mem_rw_in && addr_req_in + mem_load_size_in -1 < MEM_DEPTH 
+            && mem_load_size_in != NO_LOAD_SIZE) begin
             case(mem_load_size_in)
                 LOAD_SIZE_WORD: begin
                 mem_data_out = {
@@ -62,7 +64,8 @@ module Memory #(
                 NO_LOAD_SIZE: mem_data_out = 32'h0;
                 default: mem_data_out = 32'h0;
             endcase
-        end
+            end else 
+                mem_data_out = 32'h0;
     end
-    
+
 endmodule

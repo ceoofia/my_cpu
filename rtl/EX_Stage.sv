@@ -18,7 +18,9 @@ module EX_Stage (
 
     //goes back to fetch stage
     output logic [31:0] pc_redirect_dest_out,
-    output logic pc_redirect_valid
+    output logic pc_redirect_valid,
+
+    output logic [31:0] ex_fw_data
 );
     logic [31:0] ex_rs1_data;
     logic [31:0] ex_rs2_data;
@@ -51,6 +53,8 @@ module EX_Stage (
 
     assign pc_redirect_dest_out = ex_int_redir_dest;
     assign pc_redirect_valid = ex_int_redir_valid;
+
+    assign ex_fw_data = ex_int_result;
 
     Forward_Mux ex_fwd_mux (
         .rs1_fw_ex_data(ex_fw_rs1_data),
