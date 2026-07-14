@@ -8,7 +8,7 @@ TB = testbenches/$(TARGET).sv
 
 VERILATOR = verilator \
     -CFLAGS "-std=gnu++17" \
-    -LDFLAGS "-lstdc++"
+    -LDFLAGS "-lstdc++ -lpsapi"
 
 all: run
 

@@ -4,6 +4,7 @@ module IF_ID_Reg (
     input logic clk,
     input logic reset,
     input logic ifid_flush_in,
+    input logic stall_in,
     
     input logic if_id_instr_valid_in,
     input logic [31:0] if_id_instr_data_in,
@@ -17,11 +18,16 @@ module IF_ID_Reg (
 );
     always_ff @(posedge clk) begin
         if (reset | ifid_flush_in) begin
-            if_id_instr_valid_out <= 0;
+            if_id_instr_valid_out <= 1'b0;
             if_id_instr_data_out <= 32'h0;
             instr_pc_out <= 32'h0;
-        end
-        else begin
+            instr_pc4_out <= 32'h0;
+        end else if (stall_in) begin
+            if_id_instr_valid_out <= if_id_instr_valid_out;
+            if_id_instr_data_out <= if_id_instr_data_out;
+            instr_pc_out <= instr_pc_out;
+            instr_pc4_out <= instr_pc4_out;
+        end else begin
             if_id_instr_valid_out <= if_id_instr_valid_in;
             if_id_instr_data_out <= if_id_instr_data_in;
             instr_pc_out <= instr_pc_in;

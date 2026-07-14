@@ -4,22 +4,22 @@ import cpu_pkg::*;
 
 module EX_Stage (
     input cpu_pkg::idex_ctrl_signals_t idex_ctrl_signals,
-    
+
     input logic [31:0] ex_fw_rs1_data,
     input logic [31:0] ex_fw_rs2_data,
-    
+
     input logic [31:0] mem_fw_rs1_data,
     input logic [31:0] mem_fw_rs2_data,
-    
+
     input cpu_pkg::fw_rs1_sel fw_rs1_sel_in,
     input cpu_pkg::fw_rs2_sel fw_rs2_sel_in,
-    
+
     output cpu_pkg::exmem_ctrl_signals_t exmem_ctrl_signals,
-    
+
     //goes back to fetch stage
     output logic [31:0] pc_redirect_dest_out,
     output logic pc_redirect_valid,
-    
+
     output logic [31:0] ex_fw_data
 );
     logic [31:0] ex_rs1_data;

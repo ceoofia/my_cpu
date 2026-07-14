@@ -21,6 +21,9 @@ rtl/MEM_Control.sv
 rtl/EX_MEM_Reg.sv
 rtl/Memory.sv
 rtl/MEM_Stage.sv
+rtl/MEM_WB_Reg.sv
+rtl/WB_Control.sv
+rtl/Core.sv
 testbenches/ALU_tb.sv
 testbenches/Branch_Predictor_tb.sv
 testbenches/Decoder_tb.sv
