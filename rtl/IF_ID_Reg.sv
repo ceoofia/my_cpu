@@ -4,24 +4,28 @@ module IF_ID_Reg (
     input logic clk,
     input logic reset,
     input logic ifid_flush_in,
-
+    
     input logic if_id_instr_valid_in,
     input logic [31:0] if_id_instr_data_in,
     input logic [31:0] instr_pc_in,
-
+    input logic [31:0] instr_pc4_in,
+    
     output logic if_id_instr_valid_out,
     output logic [31:0] if_id_instr_data_out,
-    output logic [31:0] instr_pc_out
+    output logic [31:0] instr_pc_out,
+    output logic [31:0] instr_pc4_out
 );
     always_ff @(posedge clk) begin
-        if(reset | ifid_flush_in) begin
+        if (reset | ifid_flush_in) begin
             if_id_instr_valid_out <= 0;
             if_id_instr_data_out <= 32'h0;
             instr_pc_out <= 32'h0;
-        end else begin
+        end
+        else begin
             if_id_instr_valid_out <= if_id_instr_valid_in;
             if_id_instr_data_out <= if_id_instr_data_in;
             instr_pc_out <= instr_pc_in;
+            instr_pc4_out <= instr_pc4_in;
         end
     end
 endmodule

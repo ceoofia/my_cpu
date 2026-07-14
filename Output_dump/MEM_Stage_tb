@@ -1,0 +1,130 @@
+#! /opt/homebrew/Cellar/icarus-verilog/13.0/bin/vvp
+:ivl_version "13.0 (stable)" "(v13_0)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 12;
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/system.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/vhdl_sys.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/vhdl_textio.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/v2005_math.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/va_math.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/v2009.vpi";
+S_0x154f0c9d0 .scope package, "$unit" "$unit" 2 1;
+ .timescale 0 0;
+S_0x154f0d1a0 .scope package, "cpu_pkg" "cpu_pkg" 3 14;
+ .timescale -9 -12;
+P_0x154f0d310 .param/l "OPCODE_BRANCH" 0 3 21, C4<1100011>;
+P_0x154f0d350 .param/l "OPCODE_I_ALU" 0 3 18, C4<0010011>;
+P_0x154f0d390 .param/l "OPCODE_JAL" 0 3 22, C4<1101111>;
+P_0x154f0d3d0 .param/l "OPCODE_JALR" 0 3 23, C4<1100111>;
+P_0x154f0d410 .param/l "OPCODE_LOAD" 0 3 19, C4<0000011>;
+P_0x154f0d450 .param/l "OPCODE_LUI" 0 3 24, C4<0110111>;
+P_0x154f0d490 .param/l "OPCODE_R" 0 3 17, C4<0110011>;
+P_0x154f0d4d0 .param/l "OPCODE_SW" 0 3 20, C4<0100011>;
+enum0x154e0a200 .enum4 (3)
+   "BEQ_FUNCT3" 3'b000,
+   "BNE_FUNCT3" 3'b001
+ ;
+enum0x154e0a580 .enum4 (3)
+   "NEXTPC" 3'b000,
+   "ALU_PC_RESULT" 3'b001,
+   "OFFSET" 3'b010,
+   "ALU_PC_RESULT_JALR" 3'b011,
+   "NOP_PC" 3'b100
+ ;
+enum0x154e0ab40 .enum4 (3)
+   "IMM_S_TYPE" 3'b000,
+   "IMM_I_TYPE" 3'b001,
+   "IMM_B_TYPE" 3'b010,
+   "IMM_U_TYPE" 3'b011,
+   "IMM_J_TYPE" 3'b100,
+   "NO_IMM" 3'b101,
+   "NULL_IMM" 3'b110
+ ;
+enum0x154e0b2c0 .enum4 (3)
+   "ALU_ADD" 3'b000,
+   "ALU_SUB" 3'b001,
+   "ALU_AND" 3'b010,
+   "ALU_OR" 3'b011,
+   "ALU_XOR" 3'b100,
+   "ALU_SLT" 3'b101,
+   "ALU_NULL" 3'b110,
+   "ALU_NOP" 3'b111
+ ;
+enum0x154e0bb10 .enum4 (2)
+   "ALU_A_RS1" 2'b00,
+   "ALU_A_PC" 2'b01,
+   "ALU_A_ZERO" 2'b10,
+   "ALU_A_NOP" 2'b11
+ ;
+enum0x154e0bfd0 .enum4 (2)
+   "ALU_B_RS2" 2'b00,
+   "ALU_B_IMM" 2'b01,
+   "ALU_B_NOP" 2'b10
+ ;
+enum0x154e0c3d0 .enum4 (2)
+   "COMP_A_RS1" 2'b00,
+   "COMP_A_NOP" 2'b01
+ ;
+enum0x154e0c6b0 .enum4 (2)
+   "COMP_B_RS2" 2'b00,
+   "COMP_B_IMM" 2'b01,
+   "COMP_B_NOP" 2'b10
+ ;
+enum0x154e0cab0 .enum4 (3)
+   "NO_BRANCH" 3'b000,
+   "BRANCH_BEQ" 3'b001,
+   "BRANCH_BNE" 3'b010
+ ;
+enum0x154e0cef0 .enum4 (3)
+   "NO_JUMP" 3'b000,
+   "JUMP_JAL" 3'b001,
+   "JUMP_JALR" 3'b010
+ ;
+enum0x154e0d2f0 .enum4 (3)
+   "COMP_EQ" 3'b000,
+   "COMP_NE" 3'b001,
+   "COMP_LT" 3'b010,
+   "COMP_SLT" 3'b011,
+   "NO_COMP" 3'b100
+ ;
+enum0x154e0d8b0 .enum4 (2)
+   "LW" 2'b00,
+   "SW" 2'b01,
+   "NO_LSU" 2'b10
+ ;
+enum0x154e0dca0 .enum4 (2)
+   "RS1_FW_EX" 2'b00,
+   "RS1_FW_MEM" 2'b01,
+   "RS1_NO_FW" 2'b10
+ ;
+enum0x154e0e0a0 .enum4 (2)
+   "RS2_FW_EX" 2'b00,
+   "RS2_FW_MEM" 2'b01,
+   "RS2_NO_FW" 2'b10
+ ;
+enum0x154e0e4a0 .enum4 (3)
+   "STORE_SIZE_WORD" 3'b100,
+   "STORE_SIZE_HALF" 3'b010,
+   "STORE_SIZE_BYTE" 3'b001,
+   "NO_STORE_SIZE" 3'b000
+ ;
+enum0x154e0eac0 .enum4 (3)
+   "LOAD_SIZE_WORD" 3'b100,
+   "LOAD_SIZE_HALF" 3'b010,
+   "LOAD_SIZE_BYTE" 3'b001,
+   "NO_LOAD_SIZE" 3'b000
+ ;
+enum0x154e0f0d0 .enum4 (2)
+   "WB_RESULT_EX" 2'b00,
+   "WB_RESULT_MEM" 2'b01,
+   "NO_WB" 2'b10
+ ;
+S_0x154f0d6a0 .scope module, "MEM_Stage_tb" "MEM_Stage_tb" 4 5;
+ .timescale -9 -12;
+# The file index is used to find the file name in the following table.
+:file_names 5;
+    "N/A";
+    "<interactive>";
+    "-";
+    "rtl/cpu_pkg.sv";
+    "testbenches/MEM_Stage_tb.sv";

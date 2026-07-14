@@ -31,3 +31,4 @@ testbenches/Instr_Mem_tb.sv
 testbenches/PC_Fetch_tb.sv
 testbenches/Register_File_tb.sv
 testbenches/EX_Stage_tb.sv
+testbenches/MEM_Stage_tb.sv
