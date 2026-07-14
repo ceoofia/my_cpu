@@ -1,7 +1,10 @@
 `timescale 1ns/1ps
 import cpu_pkg::*;
 
-module MEM_Stage (
+module MEM_Stage #(
+    parameter MEM_DEPTH = 4096,
+    parameter DATA_ADDR = 0
+) (
     input logic clk,
     input logic reset,
     input cpu_pkg::exmem_ctrl_signals_t exmem_signals_in,
@@ -26,13 +29,13 @@ module MEM_Stage (
         
         .mem_en_out(mem_int_en),
         .mem_rw_out(mem_int_rw),
-        .mem_store_size_out(mem_int_load_size),
-        .mem_load_size_out(mem_int_store_size)
+        .mem_store_size_out(mem_int_store_size),
+        .mem_load_size_out(mem_int_load_size)
     );
     
     Memory#(
-        .MEM_DEPTH(4096),
-        .DATA_ADDR(0)
+        .MEM_DEPTH(MEM_DEPTH),
+        .DATA_ADDR(DATA_ADDR)
     ) mem_int_memory(
         .clk(clk),
         .reset(reset),

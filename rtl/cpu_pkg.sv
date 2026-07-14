@@ -200,7 +200,6 @@ package cpu_pkg;
         
         wb_src_e wb_src_sel;
         
-        
         //memory
         logic lsu_en;
         lsu_op lsu_op_type;

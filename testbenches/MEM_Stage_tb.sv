@@ -28,20 +28,21 @@ module MEM_Stage_tb;
     
     task automatic check_mem_result(
             input int testnum,
-            input logic [31:0] ex_expected,
             input logic [31:0] mem_expected
     );
-        $display("Test %0d.", testnum);
-        assert (ex_expected == mem_signals_tb.ex_result)
-        else
-            $fatal(testnum, "EX Result does not match. Expected: %0h, DUT: %0h",
-                    ex_expected, mem_signals_tb.ex_result);
+        #1;
         
         assert (mem_expected == mem_signals_tb.mem_result)
         else
-            $fatal(testnum, "Mem Result does not match. Expected: %0h, DUT: %0h")
-            
-            $display("----------------------------------------------")
+            $fatal(testnum, "Mem Result does not match. Expected: %0h, DUT: %0h",
+                    mem_expected, mem_signals_tb.mem_result);
+        $display("Test %0d passed.", testnum);
+    endtask
+    
+    task automatic reset_signals();
+        exmem_signals_tb.lsu_en = 1'b0;
+        exmem_signals_tb.lsu_op_type = NO_LSU;
+        exmem_signals_tb.ex_result = 32'd5;
     endtask
     
     /*
@@ -49,11 +50,11 @@ module MEM_Stage_tb;
     */
     
     initial begin
-        @(posedge clk)
-            reset = 1'b1;
+        clk = 0;
+        @(posedge clk) reset = 1'b1;
+        reset_signals();
         
-        @(posedge clk)
-            reset = 1'b0;
+        @(posedge clk) reset = 1'b0;
         
         // Word at address 0 = 0x12345678
         dut.mem_int_memory.mem[0] = 8'h78;
@@ -73,8 +74,40 @@ module MEM_Stage_tb;
         dut.mem_int_memory.mem[10] = 8'h2B;
         dut.mem_int_memory.mem[11] = 8'h1A;
         
+        //lsu_en = 0, mem_result should be 0
+        exmem_signals_tb.lsu_en = 1'b0;
+        check_mem_result(1, 32'd0);
         
+        reset_signals();
+        exmem_signals_tb.lsu_en = 1'b1;
+        exmem_signals_tb.ex_result = 32'd0;
+        exmem_signals_tb.lsu_op_type = LW;
         
+        check_mem_result(2, 32'h12345678);
+        
+        reset_signals();
+        exmem_signals_tb.lsu_en = 1'b1;
+        exmem_signals_tb.ex_result = 32'd4;
+        exmem_signals_tb.lsu_op_type = LW;
+        
+        check_mem_result(3, 32'hAABBCCDD);
+        
+        reset_signals();
+        
+        @(posedge clk);
+        exmem_signals_tb.lsu_en = 1'b1;
+        exmem_signals_tb.ex_result = 32'd12;
+        exmem_signals_tb.lsu_op_type = SW;
+        exmem_signals_tb.store_data = 32'h11FF22EE;
+        
+        @(posedge clk);
+        
+        exmem_signals_tb.ex_result = 32'd12;
+        exmem_signals_tb.lsu_op_type = LW;
+        
+        check_mem_result(4, 32'h11FF22EE);
+        
+        $finish;
     end
     
     
