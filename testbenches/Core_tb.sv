@@ -153,6 +153,7 @@ module Core_tb;
 
         print_reg();
 
+        //TODO: Fix forward control timing
 
         $finish;
     end
