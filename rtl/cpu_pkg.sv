@@ -190,6 +190,8 @@ package cpu_pkg;
         
         logic [31:0] rs1_data;
         logic [31:0] rs2_data;
+
+        logic ex_is_load;
     } idex_ctrl_signals_t;
     
     typedef struct packed {
@@ -207,7 +209,7 @@ package cpu_pkg;
         logic [31:0] ex_result;
         
         logic [31:0] store_data;
-        
+        logic is_load;
     } exmem_ctrl_signals_t;
     
     typedef struct packed {
@@ -220,7 +222,5 @@ package cpu_pkg;
         logic [31:0] mem_result;
         logic mem_result_valid;
     } memwb_ctrl_signals_t;
-    
-    
-    
+
 endpackage

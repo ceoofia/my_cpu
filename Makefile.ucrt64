@@ -13,9 +13,9 @@ VERILATOR = verilator \
 all: run
 
 build:
-	$(VERILATOR) --binary --timing --sv -Wall -Wno-fatal \
-		--top-module $(TARGET) \
-		$(PKG) $(RTL) $(TB)
+	$(VERILATOR) --binary --trace --timing --sv -Wall -Wno-fatal \
+    --top-module $(TARGET) \
+    $(PKG) $(RTL) $(TB)
 
 run: build
 	./$(OBJ_DIR)/V$(TARGET)

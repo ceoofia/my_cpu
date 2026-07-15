@@ -43,6 +43,8 @@ module ID_EX_Reg (
             
             id_ex_ctrl_signals.rs1_data <= 32'h0;
             id_ex_ctrl_signals.rs2_data <= 32'h0;
+
+            id_ex_ctrl_signals.ex_is_load <= 1'b0;
             
         end
         else begin

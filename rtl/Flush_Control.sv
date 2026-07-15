@@ -8,5 +8,5 @@ module Flush_Control (
 
     output flush_out
 );
-    assign flush_out = 1'b0;
+    
 endmodule

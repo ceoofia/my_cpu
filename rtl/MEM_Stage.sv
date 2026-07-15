@@ -11,7 +11,7 @@ module MEM_Stage #(
     
     output cpu_pkg::memwb_ctrl_signals_t mem_signals_out,
     
-    output logic [31:0] mem_fw_data
+    output logic [31:0] mem_fw_data_out
 );
     
     logic [31:0] mem_int_addr;
@@ -33,7 +33,7 @@ module MEM_Stage #(
         .mem_load_size_out(mem_int_load_size)
     );
 
-    Memory#(
+    Memory #(
         .MEM_DEPTH(MEM_DEPTH),
         .DATA_ADDR(DATA_ADDR)
     ) mem_int_memory(
@@ -59,6 +59,6 @@ module MEM_Stage #(
     assign mem_signals_out.mem_result_valid = mem_int_data_valid;
     assign mem_signals_out.wb_src_sel = exmem_signals_in.wb_src_sel;
 
-    assign mem_fw_data = mem_int_memory_data;
+    assign mem_fw_data_out = mem_int_memory_data;
 
 endmodule

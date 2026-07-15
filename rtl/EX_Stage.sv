@@ -52,6 +52,7 @@ module EX_Stage (
     assign exmem_ctrl_signals.store_data = ex_store_data;
     
     assign exmem_ctrl_signals.wb_src_sel = idex_ctrl_signals.wb_src_sel;
+    assign exmem_ctrl_signals.is_load = idex_ctrl_signals.ex_is_load;
     
     assign pc_redirect_dest_out = ex_int_redir_dest;
     assign pc_redirect_valid = ex_int_redir_valid;

@@ -8,12 +8,9 @@ module Core (
 
     output logic dummy_out
 );
-    logic if_stall;
     logic if_redirect_valid;
     logic [31:0] if_redirect_dest;
     logic [31:0] if_branch_dest;
-
-    assign if_stall = 1'b0;
 
     logic if_instr_valid;
     logic [31:0] if_instr_data;
@@ -34,7 +31,7 @@ module Core (
         .mem_en(mem_en),
 
         //Signals from PC_Fetch
-        .if_stall_in(if_stall),
+        .if_stall_in(ifid_stall),
         .if_redirect_valid(if_redirect_valid),
         .if_redirect_dest(if_redirect_dest),
         .if_branch_dest(if_branch_dest),
@@ -54,11 +51,10 @@ module Core (
     );
 
     logic ifid_flush;
-    logic ifid_stall;
 
-    //TODO: Remove when implemented
-    assign ifid_flush = 1'b0;
-    assign ifid_stall = 1'b0;
+    assign ifid_flush = ex_pc_redirect_valid;
+
+    logic ifid_stall;
 
     logic id_instr_valid;
     logic [31:0] id_instr_data;
@@ -106,11 +102,9 @@ module Core (
     );
 
     logic idex_flush;
+    assign idex_flush = ex_pc_redirect_valid;
+
     logic idex_stall;
-    
-    //Remove once implemented
-    assign idex_flush = 1'b0;
-    assign idex_stall = 1'b0;
 
     cpu_pkg::idex_ctrl_signals_t ex_ctrl_signals;
 
@@ -121,7 +115,7 @@ module Core (
         .stall_in(idex_stall),
         .idex_flush_in(idex_flush),
 
-        .id_ctrl_signals(id_ctrl_signals),
+        .id_ctrl_signals(idex_ctrl_signals),
         .id_ex_ctrl_signals(ex_ctrl_signals)
     );
 
@@ -142,7 +136,7 @@ module Core (
     assign if_redirect_dest = ex_pc_redirect_dest;
     assign if_redirect_valid = ex_pc_redirect_valid;
 
-    logic [31:0] ex_fw_data;
+    logic [31:0] ex_fw_data_to_reg;
 
     EX_Stage Core_EX (
         .idex_ctrl_signals(ex_ctrl_signals),
@@ -159,22 +153,30 @@ module Core (
         .pc_redirect_dest_out(ex_pc_redirect_dest),
         .pc_redirect_valid(ex_pc_redirect_valid),
 
-        .ex_fw_data(ex_fw_data)
+        .ex_fw_data(ex_fw_data_to_reg)
     );
 
     cpu_pkg::exmem_ctrl_signals_t mem_ctrl_signals;
 
+    logic [31:0] ex_fw_data;
+
     EX_MEM_Reg Core_EX_MEM_Reg (
         .clk(clk),
         .reset(reset),
+        .ex_fw_data_in(ex_fw_data_to_reg),
 
         .ex_ctrl_signals(exmem_ctrl_signals),
-        .mem_ctrl_signals(mem_ctrl_signals)
+        .mem_ctrl_signals(mem_ctrl_signals),
+        .ex_fw_data_out(ex_fw_data)
     );
+
+    assign ex_fw_rs1_data = ex_fw_data;
+    assign ex_fw_rs2_data = ex_fw_data;
 
     cpu_pkg::memwb_ctrl_signals_t memwb_ctrl_signals;
 
     logic [31:0] mem_fw_data;
+    logic [31:0] mem_fw_data_to_reg;
 
     MEM_Stage #(
         .MEM_DEPTH(4096),
@@ -186,18 +188,23 @@ module Core (
         .exmem_signals_in(mem_ctrl_signals),
         .mem_signals_out(memwb_ctrl_signals),
 
-        .mem_fw_data(mem_fw_data)
+        .mem_fw_data_out(mem_fw_data_to_reg)
     );
-     
+    
     cpu_pkg::memwb_ctrl_signals_t wb_ctrl_signals;
 
     MEM_WB_Reg Core_MEM_WB_Reg (
         .clk(clk),
         .reset(reset),
+        .mem_fw_data_in(mem_fw_data_to_reg),
 
         .mem_wb_signals_in(memwb_ctrl_signals),
-        .wb_signals_out(wb_ctrl_signals)
+        .wb_signals_out(wb_ctrl_signals),
+        .mem_fw_data_out(mem_fw_data)
     );
+
+    assign mem_fw_rs1_data = mem_fw_data;
+    assign mem_fw_rs2_data = mem_fw_data;
 
     WB_Control Core_WB (
         .wb_ctrl_signals_in(wb_ctrl_signals),
@@ -205,6 +212,36 @@ module Core (
         .rd_addr_out(wb_rd_addr),
         .rd_data_out(wb_rd_data),
         .rd_write_out(wb_reg_write)
+    );
+
+    Forward_Control Core_Fw_Control (
+        .id_rs1_src_addr(idex_ctrl_signals.rs1_addr),
+        .id_rs2_src_addr(idex_ctrl_signals.rs2_addr),
+
+        .ex_rd_addr(ex_ctrl_signals.rd_addr),
+        .ex_reg_write(ex_ctrl_signals.reg_write),
+
+        .mem_rd_addr(mem_ctrl_signals.rd_addr),
+        .mem_reg_write(mem_ctrl_signals.reg_write),
+
+        .ex_is_load(ex_ctrl_signals.ex_is_load),
+
+        .fw_rs1_src_sel(ex_fw_rs1_sel),
+        .fw_rs2_src_sel(ex_fw_rs2_sel)
+    );
+
+    Stall_Control Core_Stall_Control (
+        .ex_rd_addr(ex_ctrl_signals.rd_addr),
+        .ex_is_load(ex_ctrl_signals.ex_is_load),
+
+        .id_rs1_addr(idex_ctrl_signals.rs1_addr),
+        .id_rs2_addr(idex_ctrl_signals.rs2_addr),
+
+        .id_use_rs1(idex_ctrl_signals.use_rs1),
+        .id_use_rs2(idex_ctrl_signals.use_rs2),
+
+        .ifid_stall_out(ifid_stall),
+        .idex_stall_out(idex_stall)
     );
 
     assign dummy_out = 1'b0;

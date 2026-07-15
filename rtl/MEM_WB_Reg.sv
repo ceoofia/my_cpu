@@ -5,8 +5,10 @@ module MEM_WB_Reg (
     input logic clk,
     input logic reset,
     input cpu_pkg::memwb_ctrl_signals_t mem_wb_signals_in,
+    input logic [31:0] mem_fw_data_in,
 
-    output cpu_pkg::memwb_ctrl_signals_t wb_signals_out
+    output cpu_pkg::memwb_ctrl_signals_t wb_signals_out,
+    output logic [31:0] mem_fw_data_out
 );
 
     always_ff @(posedge clk) begin

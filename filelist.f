@@ -24,6 +24,7 @@ rtl/MEM_Stage.sv
 rtl/MEM_WB_Reg.sv
 rtl/WB_Control.sv
 rtl/Core.sv
+rtl/Forward_Control.sv
 testbenches/ALU_tb.sv
 testbenches/Branch_Predictor_tb.sv
 testbenches/Decoder_tb.sv

@@ -57,6 +57,8 @@ module ID_Stage (
 
     logic id_stall;
 
+    logic id_is_load;
+
     //For Immediate Parser
     cpu_pkg::imm_sel id_imm_type;
     logic [31:0] id_imm;
@@ -94,6 +96,8 @@ module ID_Stage (
 
         id_ctrl_signals.rs1_data = id_rs1_data;
         id_ctrl_signals.rs2_data = id_rs2_data;
+
+        id_ctrl_signals.ex_is_load = id_is_load;
     end
 
     //assigning outputs
@@ -133,7 +137,9 @@ module ID_Stage (
         .instr_pc4_out(id_instr_pc4),
 
         .imm_type_out(id_imm_type),
-        .lsu_op_out(id_lsu_op)
+        .lsu_op_out(id_lsu_op),
+
+        .is_load(id_is_load)
     );
 
     Imm_Parser ID_Imm_Parser(
@@ -148,17 +154,16 @@ module ID_Stage (
     ) ID_Register_File(
         .clk(clk),
         .reset(reset),
-        
+
         .rs1_addr_in(id_rs1_addr),
         .rs1_data_out(id_rs1_data),
-        
+
         .rs2_addr_in(id_rs2_addr),
         .rs2_data_out(id_rs2_data),
-        
+
         .rd_addr_in(wb_rd_addr_in),
         .rd_data_in(wb_rd_data_in),
         .write_en_in(wb_reg_write_in)
     );
-    
-    
+
 endmodule

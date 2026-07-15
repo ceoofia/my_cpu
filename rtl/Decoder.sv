@@ -46,7 +46,10 @@ module Decoder (
     output logic [31:0] instr_pc4_out,
     
     //For Immediate Parser
-    output cpu_pkg::imm_sel imm_type_out
+    output cpu_pkg::imm_sel imm_type_out,
+
+    //load flag
+    output logic is_load
 );
     logic [6:0] funct7;
     logic [2:0] funct3;
@@ -91,6 +94,7 @@ module Decoder (
         comp_a_src_out = COMP_A_NOP;
         comp_b_src_out = COMP_B_NOP;
         wb_src_sel_out = NO_WB;
+        is_load = 1'b0;
         
         if (!instr_valid_in || insert_NOP_bubble_in) begin
             comp_en_out = 1'b0;
@@ -107,6 +111,8 @@ module Decoder (
             comp_a_src_out = COMP_A_NOP;
             comp_b_src_out = COMP_B_NOP;
             wb_src_sel_out = NO_WB;
+            lsu_op_out = NO_LSU;
+            is_load = 1'b0;
             
         end
         else begin
@@ -224,6 +230,8 @@ module Decoder (
                     lsu_en_out = 1'b1;
                     
                     wb_src_sel_out = WB_RESULT_MEM;
+
+                    is_load = 1'b1;
                 end
                 
                 OPCODE_SW: begin
