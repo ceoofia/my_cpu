@@ -8,8 +8,14 @@ module ID_EX_Reg (
     input stall_in,
     input idex_flush_in,
     
+    input cpu_pkg::fw_rs1_sel fw_rs1_sel_in,
+    input cpu_pkg::fw_rs2_sel fw_rs2_sel_in,
+    
     input cpu_pkg::idex_ctrl_signals_t id_ctrl_signals,
-    output cpu_pkg::idex_ctrl_signals_t id_ex_ctrl_signals
+    output cpu_pkg::idex_ctrl_signals_t id_ex_ctrl_signals,
+    
+    output cpu_pkg::fw_rs1_sel fw_rs1_sel_out,
+    output cpu_pkg::fw_rs2_sel fw_rs2_sel_out
 );
     always_ff @(posedge clk) begin
         if (reset || stall_in || idex_flush_in) begin
@@ -43,12 +49,17 @@ module ID_EX_Reg (
             
             id_ex_ctrl_signals.rs1_data <= 32'h0;
             id_ex_ctrl_signals.rs2_data <= 32'h0;
-
+            
             id_ex_ctrl_signals.ex_is_load <= 1'b0;
+            
+            fw_rs1_sel_out <= RS1_NO_FW;
+            fw_rs2_sel_out <= RS2_NO_FW;
             
         end
         else begin
             id_ex_ctrl_signals <= id_ctrl_signals;
+            fw_rs1_sel_out <= fw_rs1_sel_in;
+            fw_rs2_sel_out <= fw_rs2_sel_in;
         end
     end
 endmodule
