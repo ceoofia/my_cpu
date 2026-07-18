@@ -67,7 +67,6 @@ class alignas(VL_CACHE_LINE_BYTES) VCore_tb___024root final {
         IData/*31:0*/ Core_tb__DOT__dut__DOT__if_branch_dest;
         IData/*31:0*/ Core_tb__DOT__dut__DOT__if_instr_data;
         IData/*31:0*/ Core_tb__DOT__dut__DOT__if_BTB_update_pc;
-        IData/*31:0*/ Core_tb__DOT__dut__DOT__if_curr_pc4;
         IData/*31:0*/ Core_tb__DOT__dut__DOT__id_instr_data;
         IData/*31:0*/ Core_tb__DOT__dut__DOT__id_instr_pc;
         IData/*31:0*/ Core_tb__DOT__dut__DOT__id_instr_pc4;
@@ -81,15 +80,16 @@ class alignas(VL_CACHE_LINE_BYTES) VCore_tb___024root final {
         IData/*31:0*/ Core_tb__DOT__dut__DOT__Core_ID__DOT__ID_Register_File__DOT__i;
         IData/*31:0*/ Core_tb__DOT__dut__DOT__Core_EX__DOT__ex_int_redir_dest;
         IData/*31:0*/ Core_tb__DOT__dut__DOT__Core_EX__DOT__ex_int_operand_parser__DOT__rs1_data_in;
+        IData/*31:0*/ Core_tb__DOT__dut__DOT__Core_EX__DOT__ex_int_operand_parser__DOT__rs2_data_in;
     };
     struct {
-        IData/*31:0*/ Core_tb__DOT__dut__DOT__Core_EX__DOT__ex_int_operand_parser__DOT__rs2_data_in;
         IData/*31:0*/ Core_tb__DOT__dut__DOT__Core_EX__DOT__ex_ALU__DOT__alu_operand_a_in;
         IData/*31:0*/ Core_tb__DOT__dut__DOT__Core_EX__DOT__ex_ALU__DOT__alu_operand_b_in;
         IData/*31:0*/ Core_tb__DOT__dut__DOT__Core_EX__DOT__ex_ALU__DOT__ALU_result_out;
         IData/*31:0*/ Core_tb__DOT__dut__DOT__Core_EX__DOT__ex_comp__DOT__comp_operand_a_in;
         IData/*31:0*/ Core_tb__DOT__dut__DOT__Core_EX__DOT__ex_comp__DOT__comp_operand_b_in;
         IData/*31:0*/ Core_tb__DOT__dut__DOT__Core_MEM__DOT__mem_int_addr;
+        IData/*31:0*/ Core_tb__DOT__dut__DOT__Core_MEM__DOT__mem_int_memory_data;
         IData/*31:0*/ Core_tb__DOT__dut__DOT__Core_MEM__DOT__mem_int_memory__DOT__i;
         IData/*31:0*/ __VactIterCount;
         IData/*31:0*/ __VinactIterCount;

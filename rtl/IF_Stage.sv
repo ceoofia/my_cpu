@@ -34,6 +34,7 @@ module IF_Stage #(
     logic if_instr_req_valid;
     
     assign if_curr_pc = if_int_current_pc_fetch;
+    assign if_curr_pc4 = if_int_current_pc4_fetch;
     
     always_comb begin
         if (reset == 1'b1 || if_stall_in == 1'b1)

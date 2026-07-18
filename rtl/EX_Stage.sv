@@ -116,7 +116,7 @@ module EX_Stage (
     EX_Result_Parser ex_int_result_parser(
         .alu_result_in(ex_alu_result),
         .comp_result_in(ex_comp_result),
-        .rs2_data_in(idex_ctrl_signals.rs2_data),
+        .rs2_data_in(ex_rs2_data),
         
         .lsu_op_in(idex_ctrl_signals.lsu_op_type),
         .branch_op_in(idex_ctrl_signals.branch_op_type),

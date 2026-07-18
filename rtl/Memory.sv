@@ -39,13 +39,13 @@ module Memory #(
                     mem[DATA_ADDR + addr_req_in + 1] <= store_data_in[15:8];
                     mem[DATA_ADDR + addr_req_in] <= store_data_in[7:0];
                 end
-                
+
                 default:;
-                
+
             endcase
         end
     end
-    
+
     always_comb begin
         mem_data_valid = 1'b0;
         if (mem_en_in && !mem_rw_in && addr_req_in + 32'(mem_load_size_in) - 1 < MEM_DEPTH

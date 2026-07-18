@@ -46,8 +46,8 @@ module EX_Result_Parser (
             pc_redirect_valid_out = 1'b0;
         end
     end
-    
+
     //passes on rs2 for store type instructions
     assign store_data_out = (lsu_op_in == SW) ? rs2_data_in : 32'h0;
-    
+
 endmodule

@@ -288,7 +288,7 @@ module Decoder (
                     
                     use_rs1_out = 1'b0;
                     use_rs2_out = 1'b0;
-                    reg_write = 1'b0;
+                    reg_write = 1'b1;
                     wb_src_sel_out = WB_RESULT_EX;
                 end
                 
@@ -315,14 +315,13 @@ module Decoder (
                     alu_op_out = ALU_ADD;
                     alu_en_out = 1'b1;
                     
+                    use_rs1_out = 1'b1;
+                    use_rs2_out = 1'b0;
                     reg_write = 1'b1;
+                    wb_src_sel_out = WB_RESULT_EX;
                 end
                 
-                default: begin
-                    imm_type_out = NULL_IMM;
-                    branch_op_out = NO_BRANCH;
-                    jump_op_out = NO_JUMP;
-                end
+                default: ;
             endcase
         end
     end
