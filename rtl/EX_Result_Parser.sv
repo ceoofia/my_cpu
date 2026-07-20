@@ -20,9 +20,9 @@ module EX_Result_Parser (
     output logic [31:0] store_data_out
 );
     always_comb begin
-        if (comp_op_in === COMP_SLT)
+        if (comp_op_in == COMP_SLT)
             EX_Result_out = {31'b0, comp_result_in};
-        else if (jump_op_in === JUMP_JAL || jump_op_in === JUMP_JALR)
+        else if (jump_op_in == JUMP_JAL || jump_op_in == JUMP_JALR)
             EX_Result_out = instr_pc4_in;
         else
             EX_Result_out = alu_result_in;
@@ -46,8 +46,8 @@ module EX_Result_Parser (
             pc_redirect_valid_out = 1'b0;
         end
     end
-
+    
     //passes on rs2 for store type instructions
     assign store_data_out = (lsu_op_in == SW) ? rs2_data_in : 32'h0;
-
+    
 endmodule
