@@ -479,12 +479,12 @@ module Core_tb;
                 dut.Core_IF.IF_Instr_Mem.instr_memory[34] = 8'hc6;
                 dut.Core_IF.IF_Instr_Mem.instr_memory[35] = 8'he3;
 
-                // PC 36: nop
-                // 0x00000013
+                // PC 36: addi x31, x0, 1
+                // 0x00100f93
                 dut.Core_IF.IF_Instr_Mem.instr_memory[36] = 8'h00;
-                dut.Core_IF.IF_Instr_Mem.instr_memory[37] = 8'h00;
-                dut.Core_IF.IF_Instr_Mem.instr_memory[38] = 8'h00;
-                dut.Core_IF.IF_Instr_Mem.instr_memory[39] = 8'h13;
+                dut.Core_IF.IF_Instr_Mem.instr_memory[37] = 8'h10;
+                dut.Core_IF.IF_Instr_Mem.instr_memory[38] = 8'h0f;
+                dut.Core_IF.IF_Instr_Mem.instr_memory[39] = 8'h93;
             end
             
             default: begin
@@ -538,24 +538,7 @@ module Core_tb;
         repeat (2) @(posedge clk);
         @(negedge clk) reset = 1'b0;
         
-        /*
-        detected_tb = 1'b0;
-
-        repeat (10) begin
-            @(posedge clk);
-
-            if(dut.wb_rd_data == 32'd35) begin
-                detected_tb = 1'b1;
-                break;
-            end
-        end
-
-        
-        if(!detected_tb)
-            $fatal("data not detected");
-        */
-        
-        repeat (100) @(posedge clk);
+        wait(dut.Core_ID.ID_Register_File.Register_array[31] == 1);
         print_reg();
         
         $finish;
