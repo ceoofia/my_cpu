@@ -1,6 +1,7 @@
 rtl/cpu_pkg.sv
 rtl/ALU.sv
-rtl/Branch_Predictor.sv
+rtl/BHT.sv
+rtl/BTB.sv
 rtl/Comparator.sv
 rtl/Decoder.sv
 rtl/EX_Operand_Parser.sv

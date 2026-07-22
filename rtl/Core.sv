@@ -10,19 +10,19 @@ module Core (
 );
     logic if_redirect_valid;
     logic [31:0] if_redirect_dest;
-    logic [31:0] if_branch_dest;
     
     logic if_instr_valid;
     logic [31:0] if_instr_data;
     
-    logic if_update_en;
+    logic if_update_valid;
     logic [31:0] if_BTB_update_pc;
-    logic if_branch_taken;
+    logic [31:0] if_update_dest_in;
     
     logic [31:0] if_curr_pc;
     logic [31:0] if_curr_pc4;
     
     logic ifid_stall;
+    logic if_branch_taken_in;
     
     IF_Stage#(
         .MEM_WIDTH(1024)
@@ -36,16 +36,16 @@ module Core (
         .if_stall_in(ifid_stall),
         .if_redirect_valid(if_redirect_valid),
         .if_redirect_dest(if_redirect_dest),
-        .if_branch_dest(if_branch_dest),
         
         //Signals from Instr Mem
         .if_instr_valid(if_instr_valid),
         .if_instr_data(if_instr_data),
         
         //Signals from Branch Predictor
-        .if_update_en(if_update_en),
+        .if_update_valid(if_update_valid),
         .if_update_pc(if_BTB_update_pc),
-        .if_branch_taken(if_branch_taken),
+        .if_update_dest_in(if_update_dest_in),
+        .if_branch_taken_in(if_branch_taken_in),
         
         //PC
         .if_curr_pc(if_curr_pc),
@@ -137,14 +137,16 @@ module Core (
     logic [31:0] mem_fw_rs1_data;
     logic [31:0] mem_fw_rs2_data;
     
+    logic [31:0] wb_fw_rs1_data;
+    logic [31:0] wb_fw_rs2_data;
+    
     cpu_pkg::exmem_ctrl_signals_t exmem_ctrl_signals;
     
     logic [31:0] ex_pc_redirect_dest;
     
-    assign if_redirect_dest = ex_pc_redirect_dest;
-    assign if_redirect_valid = ex_pc_redirect_valid;
     
     logic [31:0] ex_fw_data_to_reg;
+    logic ex_bp_update_valid;
     
     EX_Stage Core_EX(
         .idex_ctrl_signals(ex_ctrl_signals),
@@ -153,6 +155,8 @@ module Core (
         .ex_fw_rs2_data(ex_fw_rs2_data),
         .mem_fw_rs1_data(mem_fw_rs1_data),
         .mem_fw_rs2_data(mem_fw_rs2_data),
+        .wb_fw_rs1_data(wb_fw_rs1_data),
+        .wb_fw_rs2_data(wb_fw_rs2_data),
         
         .fw_rs1_sel_in(ex_fw_rs1_sel),
         .fw_rs2_sel_in(ex_fw_rs2_sel),
@@ -161,10 +165,16 @@ module Core (
         .pc_redirect_dest_out(ex_pc_redirect_dest),
         .pc_redirect_valid(ex_pc_redirect_valid),
         
-        .ex_fw_data(ex_fw_data_to_reg)
+        .ex_fw_data(ex_fw_data_to_reg),
+        .ex_bp_update_valid(ex_bp_update_valid)
     );
     
     cpu_pkg::exmem_ctrl_signals_t mem_ctrl_signals;
+
+    assign if_redirect_dest = ex_pc_redirect_dest;
+    assign if_redirect_valid = ex_pc_redirect_valid;
+    assign if_branch_taken_in = ex_pc_redirect_valid;
+    assign if_update_valid = ex_bp_update_valid;
     
     logic [31:0] ex_fw_data;
     
@@ -214,13 +224,22 @@ module Core (
     assign mem_fw_rs1_data = mem_fw_data;
     assign mem_fw_rs2_data = mem_fw_data;
     
+    logic [31:0] wb_fw_data;
+    
     WB_Control Core_WB(
+        .clk(clk),
+        .reset(reset),
         .wb_ctrl_signals_in(wb_ctrl_signals),
         
         .rd_addr_out(wb_rd_addr),
         .rd_data_out(wb_rd_data),
-        .rd_write_out(wb_reg_write)
+        .rd_write_out(wb_reg_write),
+        
+        .fw_wb_data_out(wb_fw_data)
     );
+    
+    assign wb_fw_rs1_data = wb_fw_data;
+    assign wb_fw_rs2_data = wb_fw_data;
     
     Forward_Control Core_Fw_Control(
         .rs1_src_addr(idex_ctrl_signals.rs1_addr),
@@ -231,6 +250,9 @@ module Core (
         
         .post_mem_rd_addr(mem_ctrl_signals.rd_addr),
         .post_mem_reg_write(mem_ctrl_signals.reg_write),
+        
+        .post_wb_rd_addr(wb_ctrl_signals.rd_addr),
+        .post_wb_reg_write(wb_ctrl_signals.reg_write),
         
         .post_ex_is_load(ex_ctrl_signals.ex_is_load),
         

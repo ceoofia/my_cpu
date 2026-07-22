@@ -17,7 +17,10 @@ module EX_Result_Parser (
     
     output logic [31:0] pc_redirect_dest_out,
     output logic pc_redirect_valid_out,
-    output logic [31:0] store_data_out
+    output logic [31:0] store_data_out,
+
+    //for branch prediction
+    output logic bp_update_valid_out
 );
     always_comb begin
         if (comp_op_in == COMP_SLT)
@@ -49,5 +52,6 @@ module EX_Result_Parser (
     
     //passes on rs2 for store type instructions
     assign store_data_out = (lsu_op_in == SW) ? rs2_data_in : 32'h0;
+    assign bp_update_valid_out = (jump_op_in != NO_JUMP) || (branch_op_in != NO_BRANCH);
     
 endmodule

@@ -11,6 +11,9 @@ module EX_Stage (
     input logic [31:0] mem_fw_rs1_data,
     input logic [31:0] mem_fw_rs2_data,
     
+    input logic [31:0] wb_fw_rs1_data,
+    input logic [31:0] wb_fw_rs2_data,
+    
     input cpu_pkg::fw_rs1_sel fw_rs1_sel_in,
     input cpu_pkg::fw_rs2_sel fw_rs2_sel_in,
     
@@ -20,7 +23,8 @@ module EX_Stage (
     output logic [31:0] pc_redirect_dest_out,
     output logic pc_redirect_valid,
     
-    output logic [31:0] ex_fw_data
+    output logic [31:0] ex_fw_data,
+    output logic ex_bp_update_valid
 );
     logic [31:0] ex_rs1_data;
     logic [31:0] ex_rs2_data;
@@ -65,6 +69,9 @@ module EX_Stage (
         
         .rs1_fw_mem_data(mem_fw_rs1_data),
         .rs2_fw_mem_data(mem_fw_rs2_data),
+        
+        .rs1_fw_wb_data(wb_fw_rs1_data),
+        .rs2_fw_wb_data(wb_fw_rs2_data),
         
         .fw_rs1_sel_in(fw_rs1_sel_in),
         .fw_rs2_sel_in(fw_rs2_sel_in),
@@ -128,7 +135,8 @@ module EX_Stage (
         
         .pc_redirect_dest_out(ex_int_redir_dest),
         .pc_redirect_valid_out(ex_int_redir_valid),
-        .store_data_out(ex_store_data)
+        .store_data_out(ex_store_data),
+        .bp_update_valid_out(ex_bp_update_valid)
     );
     
 endmodule

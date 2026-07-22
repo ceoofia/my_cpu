@@ -121,12 +121,14 @@ package cpu_pkg;
     typedef enum logic [1:0] {
         RS1_FW_EX,
         RS1_FW_MEM,
+        RS1_FW_WB,
         RS1_NO_FW
     } fw_rs1_sel;
     
     typedef enum logic [1:0] {
         RS2_FW_EX,
         RS2_FW_MEM,
+        RS2_FW_WB,
         RS2_NO_FW
     } fw_rs2_sel;
     
@@ -190,7 +192,7 @@ package cpu_pkg;
         
         logic [31:0] rs1_data;
         logic [31:0] rs2_data;
-
+        
         logic ex_is_load;
     } idex_ctrl_signals_t;
     
@@ -222,5 +224,5 @@ package cpu_pkg;
         logic [31:0] mem_result;
         logic mem_result_valid;
     } memwb_ctrl_signals_t;
-
+    
 endpackage
